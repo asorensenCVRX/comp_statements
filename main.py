@@ -1,7 +1,8 @@
 from database import Payees
 from pprint import pprint
-from openpyxl import load_workbook
 import pandas as pd
+from openpyxl import load_workbook
+from export_pdf import export_to_pdf
 
 
 def export_to_excel(excel_file: str, tab: str, dataframe: pd.DataFrame):
@@ -9,12 +10,10 @@ def export_to_excel(excel_file: str, tab: str, dataframe: pd.DataFrame):
         dataframe.to_excel(writer, sheet_name=tab, index=False)
 
 
-payees = Payees()
-
-
 def am_statement(**kwargs):
     """Exports all comp details to COMP_STATEMENT.xlsx, which can then be used to generate an official statement.
-    Optionally, you can pass in an email kwarg to view info for a single rep."""
+    Optionally, you can pass in an email kwarg to view info for a single rep. Set export=True to generate a PDF
+    statement."""
     email = kwargs.get('email', None)
     for am in payees.am_info:
         # get the info for only the current loop rep
@@ -25,13 +24,14 @@ def am_statement(**kwargs):
         payout_df = payees.tblpayout[payees.tblpayout['EID'] == eid]
         comp_detail_df = payees.am_comp_detail[payees.am_comp_detail['SALES_CREDIT_REP_EMAIL'] == eid]
 
+        excel_file = 'COMP_STATEMENT.xlsx'
+
         # export the rep's tblPayout info and comp detail info to different tabs on COMP_STATEMENT.xlsx
-        export_to_excel('COMP_STATEMENT.xlsx', 'payout', payout_df)
-        export_to_excel('COMP_STATEMENT.xlsx', 'detail', comp_detail_df)
-        print(name)
+        export_to_excel(excel_file, 'payout', payout_df)
+        export_to_excel(excel_file, 'detail', comp_detail_df)
 
         # export the rep's name, email, rm email, and territory name to the 'info' tab
-        excel_file = 'COMP_STATEMENT.xlsx'
+
         wb = load_workbook(excel_file)
         sheet_name = 'info'
         sheet = wb[sheet_name]
@@ -44,15 +44,17 @@ def am_statement(**kwargs):
         wb.close()
         # break
 
+        # set kwarg export=True to generate a PDF statement from the Excel file
+        export = kwargs.get('export', None)
+        if export:
+            export_to_pdf()
+        if email is not None:
+            break
+        break
 
-am_statement(email='jclemmons@cvrx.com')
 
-# all information needed comes from the Payees class, now I just need to generate comp PDFs
-
-# export_to_excel(excel_file='testing.xlsx', tab='new', dataframe=payees.am_comp_detail)
-
-
-# TODO 3: Using info from Payees, export all needed info to an Excel file
+payees = Payees()
+am_statement(export=False)
 
 
 # TODO 4: Generate a PDF comp statement based on the data from the Excel file

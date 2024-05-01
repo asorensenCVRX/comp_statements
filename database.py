@@ -14,6 +14,7 @@ def get_rep_names(role: str) -> dict:
     # connect to database
     conn = engine.connect()
     # execute query and save to df
+    print(f"Fetching {role} info...")
     query = f"select * from qryRoster where [ROLE] = '{role}' and [STATUS] = 'ACTIVE' and [isLATEST?] = 1"
     df = pd.read_sql_query(query, conn)
     # Close the connection
@@ -34,6 +35,7 @@ def get_rm_names() -> dict:
     # connect to database
     conn = engine.connect()
     # execute query and save to df
+    print("Fetching RM info...")
     query = "select * from qryRoster_RM"
     result = pd.read_sql_query(query, conn)
     # rm_df = pd.DataFrame(result)
@@ -54,6 +56,7 @@ def get_tblpayout() -> pd.DataFrame:
     # connect to database
     conn = engine.connect()
     # execute query and save to df
+    print("Fetching tblPayout data...")
     query = "select * from tblPayout where YYYYMM = (select max(tblPayout.YYYYMM) from tblPayout)"
     result = pd.read_sql_query(query, conn)
     conn.close()
@@ -66,18 +69,21 @@ def get_comp_detail(role: str) -> pd.DataFrame:
     conn = engine.connect()
     # execute query and save to df
     if role.lower() == 'rep':
+        print("Fetching qry_COMP_AM_DETAIL data...")
         query = ('select * from qry_COMP_AM_DETAIL where CLOSE_YYYYMM = (select max(CLOSE_YYYYMM) from '
                  'qry_COMP_AM_DETAIL)')
         result = pd.read_sql_query(query, conn)
         conn.close()
         return result
     elif role.lower() == 'fce':
+        print("Fetching qry_COMP_FCE_DETAIL data...")
         query = ('select * from qry_COMP_FCE_DETAIL where CLOSE_YYYYMM = (select max(CLOSE_YYYYMM) from '
                  'qry_COMP_FCE_DETAIL)')
         result = pd.read_sql_query(query, conn)
         conn.close()
         return result
     elif role.lower() == 'rm':
+        print("Fetching qry_COMP_RM_DETAIL data...")
         query = ('select * from qry_COMP_RM_DETAIL where CLOSE_YYYYMM = (select max(CLOSE_YYYYMM) from '
                  'qry_COMP_RM_DETAIL)')
         result = pd.read_sql_query(query, conn)

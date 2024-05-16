@@ -24,7 +24,7 @@ def am_statement(**kwargs):
         payout_df = payees.tblpayout[payees.tblpayout['EID'] == eid]
         comp_detail_df = payees.am_comp_detail[payees.am_comp_detail['SALES_CREDIT_REP_EMAIL'] == eid]
 
-        excel_file = 'COMP_STATEMENT.xlsx'
+        excel_file = r"C:\Users\asorensen\OneDrive - CVRx Inc\Calculate Comp\PyWorkbooks\COMP_STATEMENT.xlsx"
 
         # export the rep's tblPayout info and comp detail info to different tabs on COMP_STATEMENT.xlsx
         export_to_excel(excel_file, 'payout', payout_df)
@@ -50,11 +50,8 @@ def am_statement(**kwargs):
             export_to_pdf()
         if email is not None:
             break
-        break
 
 
 payees = Payees()
-am_statement(export=False)
-
-
-# TODO 4: Generate a PDF comp statement based on the data from the Excel file
+am_statement(export=True)
+# am_statement(export=False)

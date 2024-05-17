@@ -12,11 +12,14 @@ engine = create_engine(connection_url)
 
 
 def get_queries(conn):
+    sql_files = {}
+    with open(r"C:\Users\asorensen\OneDrive - CVRx Inc\Calculate Comp\PyWorkbooks & Queries\tblPayout.sql") as file:
+        sql_files["tblPayout"] = file.read()
     queries = {
         "REP": "select * from qryRoster where [ROLE] = 'REP' and [STATUS] = 'ACTIVE' and [isLATEST?] = 1",
         "FCE": "select * from qryRoster where [ROLE] = 'FCE' and [STATUS] = 'ACTIVE' and [isLATEST?] = 1",
         "RM": "select * from qryRoster_RM",
-        "tblPayout": "select * from tblPayout where YYYYMM = (select max(tblPayout.YYYYMM) from tblPayout)",
+        "tblPayout": sql_files["tblPayout"],
         "comp_AM": "select * from qry_COMP_AM_DETAIL where CLOSE_YYYYMM = (select max(CLOSE_YYYYMM) from "
                    "qry_COMP_AM_DETAIL) and [isSale?] = 1",
         "comp_FCE": "select * from qry_COMP_FCE_DETAIL where CLOSE_YYYYMM = (select max(CLOSE_YYYYMM) from "
@@ -37,6 +40,7 @@ def get_rep_names(df):
     info = {}
     for index, row in df.iterrows():
         info[row['NAME_REP']] = {
+            'FNAME_REP': row['FNAME_REP'],
             'EMAIL': row['REP_EMAIL'],
             'RM_EMAIL': row['RM_EMAIL'],
             'TERR_NM': row['TERR_NM']

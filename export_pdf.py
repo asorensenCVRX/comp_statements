@@ -5,7 +5,8 @@ import win32com.client
 
 def export_to_pdf():
     # Path to Excel file
-    excel_file_path = r"C:\Users\asorensen\OneDrive - CVRx Inc\Calculate Comp\PyWorkbooks\export_statements.xlsm"
+    excel_file_path = (r"C:\Users\asorensen\OneDrive - CVRx Inc\Calculate Comp\PyWorkbooks & "
+                       r"Queries\export_statements.xlsm")
 
     # Create an instance of Excel application
     excel = win32com.client.Dispatch("Excel.Application")

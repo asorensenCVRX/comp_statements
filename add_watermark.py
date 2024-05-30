@@ -43,11 +43,14 @@ def add_watermark(input_file, output_file):
 
 # Iterate over all PDF files in the folder and add watermark to each
 def add_directory_watermark(input_folder_path, output_folder_path):
-    """adds a watermark to each file in a given directory"""
+    """Adds a watermark to each file in a given directory, saves the watermarked file into a new directory,
+    then deletes the original file."""
     for file_name in os.listdir(input_folder_path):
         if file_name.endswith('.pdf'):
             input_file_path = os.path.join(input_folder_path, file_name)
             output_file_path = os.path.join(output_folder_path, f'PRELIMINARY_{file_name}')
             add_watermark(input_file_path, output_file_path)
+            # check if the line below works
+            # os.remove(input_file_path)
 
     print('Watermark added to all PDF files in the folder.')

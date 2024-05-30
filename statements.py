@@ -18,6 +18,7 @@ def am_statement(payees, **kwargs):
     Optionally, you can pass in an email kwarg to view info for a single rep. Set export=True to generate a PDF
     statement."""
     email = kwargs.get('email', None)
+    # skip_rep = kwargs.get('skip_rep', None)
     for am in payees.am_info:
         # get the info for only the current loop rep
         name = None if email else am

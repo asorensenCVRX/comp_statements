@@ -1,6 +1,7 @@
 from export_pdf import export_to_pdf
 import pandas as pd
 from openpyxl import load_workbook
+from main import comp_month
 
 tms = ['ccraigo@cvrx.com', 'dduffy@cvrx.com', 'ecorson@cvrx.com', 'jbuxton@cvrx.com', 'jclemmons@cvrx.com',
        'jrussell@cvrx.com', 'jsantoli@cvrx.com', 'jwyatt@cvrx.com', 'tbarker@cvrx.com']
@@ -9,15 +10,17 @@ rms = ['jgarner@cvrx.com', 'kdenton@cvrx.com', 'jhorky@cvrx.com', 'ccastillo@cvr
 
 
 def export_to_excel(excel_file: str, tab: str, dataframe: pd.DataFrame):
+    """Writes a pandas dataframe pulled from database.py to the specified Excel file and tab."""
     with pd.ExcelWriter(excel_file, engine='openpyxl', mode='a', if_sheet_exists='replace') as writer:
         dataframe.to_excel(writer, sheet_name=tab, index=False)
 
 
 def am_statement(payees, **kwargs):
     """Exports all comp details to COMP_STATEMENT.xlsx, which can then be used to generate an official statement.
-    Optionally, you can pass in an email kwarg to view info for a single rep. Set export=True to generate a PDF
-    statement."""
+    Optionally, you can pass in an email kwarg to view info for a single rep. Set export=True to run a VBA script to
+    generate a PDF statement."""
     email = kwargs.get('email', None)
+    print("Generating AM Statements...")
     # skip_rep = kwargs.get('skip_rep', None)
     for am in payees.am_info:
         # get the info for only the current loop rep
@@ -47,6 +50,7 @@ def am_statement(payees, **kwargs):
             sheet['B5'].value = 'Territory Manager'
         else:
             sheet['B5'].value = 'Account Manager'
+        sheet['B6'].value = comp_month
         wb.save(excel_file)
         wb.close()
         # break
@@ -64,6 +68,7 @@ def rm_statement(payees, **kwargs):
         Optionally, you can pass in an email kwarg to view info for a single rep. Set export=True to generate a PDF
         statement."""
     email = kwargs.get('email', None)
+    print("Generating RM Statements...")
     for rm in payees.rm_info:
         # get the info for only the current loop rep
         name = None if email else rm
@@ -89,6 +94,7 @@ def rm_statement(payees, **kwargs):
             sheet['B5'].value = 'Region Manager'
         else:
             sheet['B5'].value = 'Area Director'
+        sheet['B6'].value = comp_month
         wb.save(excel_file)
         wb.close()
 
@@ -105,6 +111,7 @@ def csr_statement(payees, **kwargs):
         Optionally, you can pass in an email kwarg to view info for a single rep. Set export=True to generate a PDF
         statement."""
     email = kwargs.get('email', None)
+    print("Generating CSR Statements...")
     for csr in payees.csr_info:
         # get the info for only the current loop rep
         name = None if email else csr
@@ -130,6 +137,7 @@ def csr_statement(payees, **kwargs):
         sheet['B3'].value = rm
         sheet['B4'].value = terr
         sheet['B6'].value = base_bonus
+        sheet['B7'].value = comp_month
         wb.save(excel_file)
         wb.close()
 

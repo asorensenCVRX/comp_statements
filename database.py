@@ -1,5 +1,6 @@
 import pandas as pd
 from sqlalchemy.engine import URL, create_engine
+from main import comp_mm
 
 # connection parameters
 server = 'ods-sql-server-us.database.windows.net'
@@ -22,12 +23,9 @@ def get_queries(conn):
         "CSR": sql_files["CSR"],
         "RM": "select * from qryRoster_RM",
         "tblPayout": sql_files["tblPayout"],
-        "comp_AM": "select * from qry_COMP_AM_DETAIL where CLOSE_YYYYMM = (select max(CLOSE_YYYYMM) from "
-                   "qry_COMP_AM_DETAIL) and [isSale?] = 1",
-        "comp_CSR": "select * from qry_COMP_FCE_DETAIL where CLOSE_YYYYMM = (select max(CLOSE_YYYYMM) from "
-                    "qry_COMP_FCE_DETAIL)",
-        "comp_RM": "select * from qry_COMP_RM_DETAIL where CLOSE_YYYYMM = (select max(CLOSE_YYYYMM) from "
-                   "qry_COMP_RM_DETAIL)"
+        "comp_AM": f"select * from qry_COMP_AM_DETAIL where CLOSE_YYYYMM = '2024_{comp_mm}' and [isSale?] = 1",
+        "comp_CSR": f"select * from qry_COMP_FCE_DETAIL where CLOSE_YYYYMM = '2024_{comp_mm}'",
+        "comp_RM": f"select * from qry_COMP_RM_DETAIL where CLOSE_YYYYMM = '2024_{comp_mm}'"
     }
 
     results = {}

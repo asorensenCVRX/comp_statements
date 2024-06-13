@@ -10,6 +10,7 @@ rm_official_email = r"C:\Users\asorensen\OneDrive - CVRx Inc\Calculate Comp\Stat
 
 
 def send_am_prelim_email(payees, month_mm, month_name, **kwargs):
+    print("Sending AM Prelim Emails...")
     for key, value in payees.am_info.items():
         folder = fr"C:\Users\asorensen\OneDrive - CVRx Inc\Calculate Comp\Statements\AM\2024_{month_mm}\PRELIMINARIES"
         file_name = f'PRELIMINARY_{key}_2024_{month_mm}.pdf'
@@ -20,6 +21,7 @@ def send_am_prelim_email(payees, month_mm, month_name, **kwargs):
 
 
 def send_rm_prelim_email(payees, month_mm, month_name):
+    print("Sending RM Prelim Emails...")
     for key, value in payees.rm_info.items():
         folder = fr"C:\Users\asorensen\OneDrive - CVRx Inc\Calculate Comp\Statements\RM\2024_{month_mm}\PRELIMINARIES"
         file_name = f'PRELIMINARY_{key}_2024_{month_mm}.pdf'
@@ -30,6 +32,7 @@ def send_rm_prelim_email(payees, month_mm, month_name):
 
 
 def send_csr_prelim_email(payees, month_mm, month_name):
+    print("Sending CSR Prelim Emails...")
     for key, value in payees.csr_info.items():
         folder = fr"C:\Users\asorensen\OneDrive - CVRx Inc\Calculate Comp\Statements\CSR\2024_{month_mm}\PRELIMINARIES"
         file_name = f'PRELIMINARY_{key}_2024_{month_mm}.pdf'
@@ -60,6 +63,7 @@ def send_rm_official_email(payees, month_mm, month_name):
         subject = f"{month_name} Comp Statement: {value['REGION']}"
         email = SendEmail(rm_official_email, key, value['FNAME'], value['EMAIL'], None, subject, path)
         email.send_email()
+        print(f"Email sent to {value['EMAIL']}")
 
 
 def send_csr_official_email(payees, month_mm, month_name):
@@ -70,6 +74,7 @@ def send_csr_official_email(payees, month_mm, month_name):
         subject = f"{month_name} Comp Statement: {value['TERR_NM']}"
         email = SendEmail(am_official_email, key, value['FNAME_REP'], value['EMAIL'], value['RM_EMAIL'], subject, path)
         email.send_email()
+        print(f"Email sent to {value['EMAIL']}")
 
 
 class SendEmail:

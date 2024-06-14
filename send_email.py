@@ -2,14 +2,10 @@
 import win32com.client
 import html
 import os
-
-am_prelim_email = r"C:\Users\asorensen\OneDrive - CVRx Inc\Calculate Comp\Statements\AM Prelim msg.oft"
-rm_prelim_email = r"C:\Users\asorensen\OneDrive - CVRx Inc\Calculate Comp\Statements\RM Prelim msg.oft"
-am_official_email = r"C:\Users\asorensen\OneDrive - CVRx Inc\Calculate Comp\Statements\AM msg.oft"
-rm_official_email = r"C:\Users\asorensen\OneDrive - CVRx Inc\Calculate Comp\Statements\RM msg.oft"
+from VARIABLES import am_prelim_email, rm_prelim_email, am_official_email, rm_official_email
 
 
-def send_am_prelim_email(payees, month_mm, month_name, **kwargs):
+def send_am_prelim_email(payees, month_mm, month_name):
     print("Sending AM Prelim Emails...")
     for key, value in payees.am_info.items():
         folder = fr"C:\Users\asorensen\OneDrive - CVRx Inc\Calculate Comp\Statements\AM\2024_{month_mm}\PRELIMINARIES"

@@ -1,6 +1,6 @@
 import pandas as pd
 from sqlalchemy.engine import URL, create_engine
-from main import comp_mm
+from VARIABLES import comp_mm
 
 # connection parameters
 server = 'ods-sql-server-us.database.windows.net'
@@ -13,6 +13,8 @@ engine = create_engine(connection_url)
 
 
 def get_queries(conn):
+    """Runs all entered queries and returns their results as a dictionary called "results" where the query name is
+    the key and the query results is the value."""
     sql_files = {}
     with open(r"C:\Users\asorensen\OneDrive - CVRx Inc\Calculate Comp\PyWorkbooks & Queries\tblPayout.sql") as file:
         sql_files["tblPayout"] = file.read()

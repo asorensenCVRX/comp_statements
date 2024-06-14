@@ -1,12 +1,7 @@
 from export_pdf import export_to_pdf
 import pandas as pd
 from openpyxl import load_workbook
-from main import comp_month
-
-tms = ['ccraigo@cvrx.com', 'dduffy@cvrx.com', 'ecorson@cvrx.com', 'jbuxton@cvrx.com', 'jclemmons@cvrx.com',
-       'jrussell@cvrx.com', 'jsantoli@cvrx.com', 'jwyatt@cvrx.com', 'tbarker@cvrx.com']
-
-rms = ['jgarner@cvrx.com', 'kdenton@cvrx.com', 'jhorky@cvrx.com', 'ccastillo@cvrx.com']
+from VARIABLES import comp_month, tms, rms
 
 
 def export_to_excel(excel_file: str, tab: str, dataframe: pd.DataFrame):
@@ -21,7 +16,6 @@ def am_statement(payees, **kwargs):
     generate a PDF statement."""
     email = kwargs.get('email', None)
     print("Generating AM Statements...")
-    # skip_rep = kwargs.get('skip_rep', None)
     for am in payees.am_info:
         # get the info for only the current loop rep
         name = None if email else am

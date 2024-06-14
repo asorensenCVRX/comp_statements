@@ -14,17 +14,17 @@ from VARIABLES import (am_directory, am_prelim_directory, rm_directory, rm_preli
 payees = Payees()
 
 # step 1: create comp statements
-# am_statement(payees, export=True)
-# rm_statement(payees, export=True)
-# csr_statement(payees, export=True)
+am_statement(payees, export=True)
+rm_statement(payees, export=True)
+csr_statement(payees, export=True)
 
 ##################################################
 
 # PRELIMS
 # step 2: add watermark to statements to create prelim statements.
-# add_directory_watermark(am_directory, am_prelim_directory)
-# add_directory_watermark(rm_directory, rm_prelim_directory)
-# add_directory_watermark(csr_directory, csr_prelim_directory)
+add_directory_watermark(am_directory, am_prelim_directory)
+add_directory_watermark(rm_directory, rm_prelim_directory)
+add_directory_watermark(csr_directory, csr_prelim_directory)
 
 # step 3: send preliminary statement emails
 # send_am_prelim_email(payees, comp_mm, comp_month)

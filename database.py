@@ -13,19 +13,30 @@ engine = create_engine(connection_url)
 
 
 def get_queries(conn):
-    """Runs all entered queries and returns their results as a dictionary called "results" where the query name is
-    the key and the query results is the value."""
+    """Runs all entered queries and returns their results as a dictionary called "results"
+    where the query name is the key and the query results is the value."""
+
+    sql_files_paths = {
+        "tblPayout": r"C:\Users\asorensen\OneDrive - CVRx Inc\Calculate Comp\PyWorkbooks & Queries\tblPayout.sql",
+        "AM": r"C:\Users\asorensen\OneDrive - CVRx Inc\Calculate Comp\PyWorkbooks & Queries\AM_INFO.sql",
+        "CSR": r"C:\Users\asorensen\OneDrive - CVRx Inc\Calculate Comp\PyWorkbooks & Queries\FCE_INFO.sql",
+        "comp_AM": r"C:\Users\asorensen\OneDrive - CVRx Inc\Calculate Comp\PyWorkbooks & Queries\comp_AM.sql"
+    }
+
     sql_files = {}
-    with open(r"C:\Users\asorensen\OneDrive - CVRx Inc\Calculate Comp\PyWorkbooks & Queries\tblPayout.sql") as file:
-        sql_files["tblPayout"] = file.read()
-    with open(r"C:\Users\asorensen\OneDrive - CVRx Inc\Calculate Comp\PyWorkbooks & Queries\FCE_INFO.sql") as file:
-        sql_files["CSR"] = file.read()
+    for key, path in sql_files_paths.items():
+        with open(path) as file:
+            sql_files[key] = file.read()
+
+    sql_files["comp_AM"] = sql_files["comp_AM"].replace("REPLACEME", f"'2024_{comp_mm}'")
+    sql_files["tblPayout"] = sql_files["tblPayout"].replace("REPLACEME", f"'2024_{comp_mm}'")
+
     queries = {
-        "REP": "select * from qryRoster where [ROLE] = 'REP' and [STATUS] = 'ACTIVE' and [isLATEST?] = 1",
+        "REP": sql_files["AM"],
         "CSR": sql_files["CSR"],
         "RM": "select * from qryRoster_RM",
         "tblPayout": sql_files["tblPayout"],
-        "comp_AM": f"select * from qry_COMP_AM_DETAIL where CLOSE_YYYYMM = '2024_{comp_mm}' and [isSale?] = 1",
+        "comp_AM": sql_files["comp_AM"],
         "comp_CSR": f"select * from qry_COMP_FCE_DETAIL where CLOSE_YYYYMM = '2024_{comp_mm}'",
         "comp_RM": f"select * from qry_COMP_RM_DETAIL where CLOSE_YYYYMM = '2024_{comp_mm}'"
     }

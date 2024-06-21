@@ -1,6 +1,6 @@
 import pandas as pd
 from sqlalchemy.engine import URL, create_engine
-from VARIABLES import comp_mm
+from VARIABLES import comp_mm, payout_table, am_comp, fce_info, am_info
 from azure.identity import DefaultAzureCredential
 import struct
 
@@ -27,10 +27,10 @@ def get_queries(conn):
     where the query name is the key and the query results is the value."""
 
     sql_files_paths = {
-        "tblPayout": r"C:\Users\asorensen\OneDrive - CVRx Inc\Calculate Comp\PyWorkbooks & Queries\tblPayout.sql",
-        "AM": r"C:\Users\asorensen\OneDrive - CVRx Inc\Calculate Comp\PyWorkbooks & Queries\AM_INFO.sql",
-        "CSR": r"C:\Users\asorensen\OneDrive - CVRx Inc\Calculate Comp\PyWorkbooks & Queries\FCE_INFO.sql",
-        "comp_AM": r"C:\Users\asorensen\OneDrive - CVRx Inc\Calculate Comp\PyWorkbooks & Queries\comp_AM.sql"
+        "tblPayout": payout_table,
+        "AM": am_info,
+        "CSR": fce_info,
+        "comp_AM": am_comp
     }
 
     sql_files = {}

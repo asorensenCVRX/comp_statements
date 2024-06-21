@@ -1,7 +1,7 @@
 from export_pdf import export_to_pdf
 import pandas as pd
 from openpyxl import load_workbook
-from VARIABLES import comp_month, tms, rms
+from VARIABLES import comp_month, tms, rms, am_comp_file, csr_comp_file, rm_comp_file
 
 
 def export_to_excel(excel_file: str, tab: str, dataframe: pd.DataFrame):
@@ -25,7 +25,7 @@ def am_statement(payees, **kwargs):
         payout_df = payees.tblpayout[payees.tblpayout['EID'] == eid]
         comp_detail_df = payees.am_comp_detail[payees.am_comp_detail['SALES_CREDIT_REP_EMAIL'] == eid]
 
-        excel_file = r"C:\Users\asorensen\OneDrive - CVRx Inc\Calculate Comp\PyWorkbooks & Queries\COMP_STATEMENT.xlsx"
+        excel_file = am_comp_file
 
         # export the rep's tblPayout info and comp detail info to different tabs on COMP_STATEMENT.xlsx
         export_to_excel(excel_file, 'payout', payout_df)
@@ -71,8 +71,7 @@ def rm_statement(payees, **kwargs):
         payout_df = payees.tblpayout[payees.tblpayout['EID'] == eid]
         comp_detail_df = payees.rm_comp_detail[payees.rm_comp_detail['SALES_CREDIT_RM_EMAIL'] == eid]
 
-        excel_file = (r"C:\Users\asorensen\OneDrive - CVRx Inc\Calculate Comp\PyWorkbooks & "
-                      r"Queries\COMP_STATEMENT_RM.xlsx")
+        excel_file = rm_comp_file
 
         # export the rep's tblPayout info and comp detail info to different tabs on COMP_STATEMENT.xlsx
         export_to_excel(excel_file, 'payout', payout_df)
@@ -116,8 +115,7 @@ def csr_statement(payees, **kwargs):
         payout_df = payees.tblpayout[payees.tblpayout['EID'] == eid]
         comp_detail_df = payees.csr_comp_detail[payees.csr_comp_detail['SALES_CREDIT_FCE_EMAIL'] == eid]
 
-        excel_file = (r"C:\Users\asorensen\OneDrive - CVRx Inc\Calculate Comp\PyWorkbooks & "
-                      r"Queries\COMP_STATEMENT_CSR.xlsx")
+        excel_file = csr_comp_file
 
         # export the rep's tblPayout info and comp detail info to different tabs on COMP_STATEMENT.xlsx
         export_to_excel(excel_file, 'payout', payout_df)

@@ -2,13 +2,14 @@
 import win32com.client
 import html
 import os
-from VARIABLES import am_prelim_email, rm_prelim_email, am_official_email, rm_official_email
+from VARIABLES import (am_prelim_email, rm_prelim_email, am_official_email, rm_official_email, am_prelim_directory,
+                       am_directory, csr_prelim_directory, csr_directory, rm_prelim_directory, rm_directory)
 
 
 def send_am_prelim_email(payees, month_mm, month_name):
     print("Sending AM Prelim Emails...")
     for key, value in payees.am_info.items():
-        folder = fr"C:\Users\asorensen\OneDrive - CVRx Inc\Calculate Comp\Statements\AM\2024_{month_mm}\PRELIMINARIES"
+        folder = am_prelim_directory
         file_name = f'PRELIMINARY_{key}_2024_{month_mm}.pdf'
         path = os.path.join(folder, file_name)
         subject = f"PRELIMINARY {month_name} Comp Statement: {value['TERR_NM']}"
@@ -19,7 +20,7 @@ def send_am_prelim_email(payees, month_mm, month_name):
 def send_rm_prelim_email(payees, month_mm, month_name):
     print("Sending RM Prelim Emails...")
     for key, value in payees.rm_info.items():
-        folder = fr"C:\Users\asorensen\OneDrive - CVRx Inc\Calculate Comp\Statements\RM\2024_{month_mm}\PRELIMINARIES"
+        folder = rm_prelim_directory
         file_name = f'PRELIMINARY_{key}_2024_{month_mm}.pdf'
         path = os.path.join(folder, file_name)
         subject = f"PRELIMINARY {month_name} Comp Statement: {value['REGION']}"
@@ -30,7 +31,7 @@ def send_rm_prelim_email(payees, month_mm, month_name):
 def send_csr_prelim_email(payees, month_mm, month_name):
     print("Sending CSR Prelim Emails...")
     for key, value in payees.csr_info.items():
-        folder = fr"C:\Users\asorensen\OneDrive - CVRx Inc\Calculate Comp\Statements\CSR\2024_{month_mm}\PRELIMINARIES"
+        folder = csr_prelim_directory
         file_name = f'PRELIMINARY_{key}_2024_{month_mm}.pdf'
         path = os.path.join(folder, file_name)
         subject = f"PRELIMINARY {month_name} Comp Statement: {value['TERR_NM']}"
@@ -41,7 +42,7 @@ def send_csr_prelim_email(payees, month_mm, month_name):
 def send_am_official_email(payees, month_mm, month_name, **kwargs):
     """Use the kwarg skip_reps='email' in a list form to skip sending comp statements to specific reps."""
     for key, value in payees.am_info.items():
-        folder = fr"C:\Users\asorensen\OneDrive - CVRx Inc\Calculate Comp\Statements\AM\2024_{month_mm}"
+        folder = am_directory
         file_name = f'{key}_2024_{month_mm}.pdf'
         path = os.path.join(folder, file_name)
         subject = f"{month_name} Comp Statement: {value['TERR_NM']}"
@@ -53,7 +54,7 @@ def send_am_official_email(payees, month_mm, month_name, **kwargs):
 
 def send_rm_official_email(payees, month_mm, month_name):
     for key, value in payees.rm_info.items():
-        folder = fr"C:\Users\asorensen\OneDrive - CVRx Inc\Calculate Comp\Statements\RM\2024_{month_mm}"
+        folder = rm_directory
         file_name = f'{key}_2024_{month_mm}.pdf'
         path = os.path.join(folder, file_name)
         subject = f"{month_name} Comp Statement: {value['REGION']}"
@@ -64,7 +65,7 @@ def send_rm_official_email(payees, month_mm, month_name):
 
 def send_csr_official_email(payees, month_mm, month_name):
     for key, value in payees.csr_info.items():
-        folder = fr"C:\Users\asorensen\OneDrive - CVRx Inc\Calculate Comp\Statements\CSR\2024_{month_mm}"
+        folder = csr_directory
         file_name = f'{key}_2024_{month_mm}.pdf'
         path = os.path.join(folder, file_name)
         subject = f"{month_name} Comp Statement: {value['TERR_NM']}"

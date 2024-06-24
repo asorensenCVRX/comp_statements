@@ -38,6 +38,7 @@ def start():
             send_am_official_email(payees, comp_mm, comp_month)
             send_rm_official_email(payees, comp_mm, comp_month)
             send_csr_official_email(payees, comp_mm, comp_month)
+    window.destroy()
 
 
 def get_radio(variable):

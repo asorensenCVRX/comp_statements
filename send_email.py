@@ -1,4 +1,5 @@
 # must pip install pywin32
+import pandas
 import win32com.client
 import html
 import os
@@ -6,72 +7,68 @@ from VARIABLES import (am_prelim_email, rm_prelim_email, am_official_email, rm_o
                        am_directory, csr_prelim_directory, csr_directory, rm_prelim_directory, rm_directory)
 
 
-def send_am_prelim_email(payees, month_mm, month_name):
-    print("Sending AM Prelim Emails...")
+def send_am_email(payees, month_mm: str, month_name: str, is_prelim: bool):
+    print("Sending AM prelim emails...") if is_prelim \
+        else print("Sending AM official emails...")
     for key, value in payees.am_info.items():
-        folder = am_prelim_directory
-        file_name = f'PRELIMINARY_{key}_2024_{month_mm}.pdf'
+        folder = am_prelim_directory if is_prelim \
+            else am_directory
+        file_name = f'PRELIMINARY_{key}_2024_{month_mm}.pdf' if is_prelim \
+            else f'{key}_2024_{month_mm}.pdf'
         path = os.path.join(folder, file_name)
-        subject = f"PRELIMINARY {month_name} Comp Statement: {value['TERR_NM']}"
-        email = SendEmail(am_prelim_email, key, value['FNAME_REP'], value['EMAIL'], value['RM_EMAIL'], subject, path)
+        subject = f"PRELIMINARY {month_name} Comp Statement: {value['TERR_NM']}" if is_prelim \
+            else f"{month_name} Comp Statement: {value['TERR_NM']}"
+        # Check if rep reports to a TM; if so, add the rep's TM and RM as managers so both get CC'd
+        manager_email = None
+        for tm, rep in payees.tm_reports.items():
+            if value["EMAIL"] in rep:
+                manager_email = f"{value['RM_EMAIL']}; {tm}"
+                break
+            else:
+                manager_email = value['RM_EMAIL']
+        template = am_prelim_email if is_prelim \
+            else am_official_email
+        email = SendEmail(template=template, recipient_fullname=key, recipient_first_name=value['FNAME_REP'],
+                          recipient_email=value['EMAIL'], manager_email=manager_email, subject=subject,
+                          attachment_path=path)
         email.send_email()
 
 
-def send_rm_prelim_email(payees, month_mm, month_name):
-    print("Sending RM Prelim Emails...")
+def send_rm_email(payees, month_mm: str, month_name: str, is_prelim: bool):
+    print("Sending RM prelim emails...") if is_prelim \
+        else print("Sending RM official emails...")
     for key, value in payees.rm_info.items():
-        folder = rm_prelim_directory
-        file_name = f'PRELIMINARY_{key}_2024_{month_mm}.pdf'
+        folder = rm_prelim_directory if is_prelim \
+            else rm_directory
+        file_name = f'PRELIMINARY_{key}_2024_{month_mm}.pdf' if is_prelim \
+            else f"{month_name} Comp Statement: {value['REGION']}"
         path = os.path.join(folder, file_name)
-        subject = f"PRELIMINARY {month_name} Comp Statement: {value['REGION']}"
-        email = SendEmail(rm_prelim_email, key, value['FNAME'], value['EMAIL'], None, subject, path)
+        subject = f"PRELIMINARY {month_name} Comp Statement: {value['REGION']}" if is_prelim \
+            else f"{month_name} Comp Statement: {value['REGION']}"
+        template = rm_prelim_email if is_prelim \
+            else rm_official_email
+        email = SendEmail(template=template, recipient_fullname=key, recipient_first_name=value['FNAME'],
+                          recipient_email=value['EMAIL'], manager_email=None, subject=subject, attachment_path=path)
         email.send_email()
 
 
-def send_csr_prelim_email(payees, month_mm, month_name):
-    print("Sending CSR Prelim Emails...")
+def send_csr_email(payees, month_mm: str, month_name: str, is_prelim: bool):
+    print("Sending CSR prelim emails...") if is_prelim \
+        else print("Sending CSR official emails...")
     for key, value in payees.csr_info.items():
-        folder = csr_prelim_directory
-        file_name = f'PRELIMINARY_{key}_2024_{month_mm}.pdf'
+        folder = csr_prelim_directory if is_prelim \
+            else csr_directory
+        file_name = f'PRELIMINARY_{key}_2024_{month_mm}.pdf' if is_prelim \
+            else f'{key}_2024_{month_mm}.pdf'
         path = os.path.join(folder, file_name)
-        subject = f"PRELIMINARY {month_name} Comp Statement: {value['TERR_NM']}"
-        email = SendEmail(am_prelim_email, key, value['FNAME_REP'], value['EMAIL'], value['RM_EMAIL'], subject, path)
+        subject = f"PRELIMINARY {month_name} Comp Statement: {value['TERR_NM']}" if is_prelim \
+            else f"{month_name} Comp Statement: {value['TERR_NM']}"
+        template = am_prelim_email if is_prelim \
+            else am_official_email
+        email = SendEmail(template=template, recipient_fullname=key, recipient_first_name=value['FNAME_REP'],
+                          recipient_email=value['EMAIL'], manager_email=value['RM_EMAIL'], subject=subject,
+                          attachment_path=path)
         email.send_email()
-
-
-def send_am_official_email(payees, month_mm, month_name, **kwargs):
-    """Use the kwarg skip_reps='email' in a list form to skip sending comp statements to specific reps."""
-    for key, value in payees.am_info.items():
-        folder = am_directory
-        file_name = f'{key}_2024_{month_mm}.pdf'
-        path = os.path.join(folder, file_name)
-        subject = f"{month_name} Comp Statement: {value['TERR_NM']}"
-        email = SendEmail(am_official_email, key, value['FNAME_REP'], value['EMAIL'], value['RM_EMAIL'], subject,
-                          path)
-        email.send_email()
-        print(f"Email sent to {value['EMAIL']}")
-
-
-def send_rm_official_email(payees, month_mm, month_name):
-    for key, value in payees.rm_info.items():
-        folder = rm_directory
-        file_name = f'{key}_2024_{month_mm}.pdf'
-        path = os.path.join(folder, file_name)
-        subject = f"{month_name} Comp Statement: {value['REGION']}"
-        email = SendEmail(rm_official_email, key, value['FNAME'], value['EMAIL'], None, subject, path)
-        email.send_email()
-        print(f"Email sent to {value['EMAIL']}")
-
-
-def send_csr_official_email(payees, month_mm, month_name):
-    for key, value in payees.csr_info.items():
-        folder = csr_directory
-        file_name = f'{key}_2024_{month_mm}.pdf'
-        path = os.path.join(folder, file_name)
-        subject = f"{month_name} Comp Statement: {value['TERR_NM']}"
-        email = SendEmail(am_official_email, key, value['FNAME_REP'], value['EMAIL'], value['RM_EMAIL'], subject, path)
-        email.send_email()
-        print(f"Email sent to {value['EMAIL']}")
 
 
 class SendEmail:
@@ -84,7 +81,6 @@ class SendEmail:
         self.fname = recipient_first_name
         self.attachment = fr'{attachment_path}'
         self.manager_email = manager_email
-        # self.send_email()
 
     def send_email(self):
         outlook = win32com.client.Dispatch('Outlook.Application')

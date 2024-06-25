@@ -1,6 +1,6 @@
 import pandas as pd
 from sqlalchemy.engine import URL, create_engine
-from VARIABLES import comp_mm, payout_table, am_comp, fce_info, am_info
+from VARIABLES import comp_mm, payout_table, am_comp, fce_info, am_info, tm_reports
 from azure.identity import DefaultAzureCredential
 import struct
 
@@ -30,7 +30,8 @@ def get_queries(conn):
         "tblPayout": payout_table,
         "AM": am_info,
         "CSR": fce_info,
-        "comp_AM": am_comp
+        "comp_AM": am_comp,
+        "TM_reports": tm_reports
     }
 
     sql_files = {}
@@ -48,7 +49,8 @@ def get_queries(conn):
         "tblPayout": sql_files["tblPayout"],
         "comp_AM": sql_files["comp_AM"],
         "comp_CSR": f"select * from qry_COMP_FCE_DETAIL where CLOSE_YYYYMM = '2024_{comp_mm}'",
-        "comp_RM": f"select * from qry_COMP_RM_DETAIL where CLOSE_YYYYMM = '2024_{comp_mm}'"
+        "comp_RM": f"select * from qry_COMP_RM_DETAIL where CLOSE_YYYYMM = '2024_{comp_mm}'",
+        "TM_reports": sql_files["TM_reports"]
     }
 
     results = {}
@@ -95,6 +97,15 @@ def get_rm_names(df):
     return info
 
 
+def get_tm_reports(df):
+    info = {}
+    for index, row in df.iterrows():
+        if row['TM_EID'] not in info:
+            info[row['TM_EID']] = []
+        info[row['TM_EID']].append(row['AM_EID'])
+    return info
+
+
 class Payees:
     """Returns info on all active reps, csrs, and rms as variables. Also returns the most recent entries in tblPayout
     as a pd.DataFrame."""
@@ -110,5 +121,6 @@ class Payees:
             self.am_comp_detail = results["comp_AM"]
             self.csr_comp_detail = results["comp_CSR"]
             self.rm_comp_detail = results["comp_RM"]
+            self.tm_reports = get_tm_reports(results["TM_reports"])
         finally:
             conn.close()

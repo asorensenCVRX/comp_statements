@@ -33,3 +33,4 @@ payout_table = r"C:\Users\asorensen\PycharmProjects\comp_statements\SQL Queries\
 am_info = r"C:\Users\asorensen\PycharmProjects\comp_statements\SQL Queries\AM_INFO.sql"
 fce_info = r"C:\Users\asorensen\PycharmProjects\comp_statements\SQL Queries\FCE_INFO.sql"
 am_comp = r"C:\Users\asorensen\PycharmProjects\comp_statements\SQL Queries\comp_AM.sql"
+tm_reports = r"C:\Users\asorensen\PycharmProjects\comp_statements\SQL Queries\TM_direct_reports.sql"

@@ -1,12 +1,16 @@
 from database import Payees
 from pprint import pprint
 from add_watermark import add_directory_watermark
-from send_email import (send_am_prelim_email, send_rm_prelim_email, send_csr_prelim_email,
-                        send_am_official_email, send_rm_official_email, send_csr_official_email)
+from send_email import send_am_email, send_rm_email, send_csr_email
 from statements import am_statement, rm_statement, csr_statement
 from VARIABLES import (am_directory, am_prelim_directory, rm_directory, rm_prelim_directory, csr_directory,
                        csr_prelim_directory, comp_mm, comp_month)
 from tkinter import *
+
+# payees = Payees()
+# for tm, rep in payees.tm_reports.items():
+#     print(tm)
+#     print(rep)
 
 window = Tk()
 window.title("COMP")
@@ -31,13 +35,13 @@ def start():
             add_directory_watermark(rm_directory, rm_prelim_directory)
     if get_radio(radio_state_email):
         if get_radio(radio_state_prelim):
-            send_am_prelim_email(payees, comp_mm, comp_month)
-            send_rm_prelim_email(payees, comp_mm, comp_month)
-            send_csr_prelim_email(payees, comp_mm, comp_month)
+            send_am_email(payees, comp_mm, comp_month, is_prelim=True)
+            send_rm_email(payees, comp_mm, comp_month, is_prelim=True)
+            send_csr_email(payees, comp_mm, comp_month, is_prelim=True)
         else:
-            send_am_official_email(payees, comp_mm, comp_month)
-            send_rm_official_email(payees, comp_mm, comp_month)
-            send_csr_official_email(payees, comp_mm, comp_month)
+            send_am_email(payees, comp_mm, comp_month, is_prelim=False)
+            send_rm_email(payees, comp_mm, comp_month, is_prelim=False)
+            send_csr_email(payees, comp_mm, comp_month, is_prelim=False)
     window.destroy()
 
 

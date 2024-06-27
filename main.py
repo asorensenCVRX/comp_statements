@@ -8,9 +8,6 @@ from VARIABLES import (am_directory, am_prelim_directory, rm_directory, rm_preli
 from tkinter import *
 
 # payees = Payees()
-# for tm, rep in payees.tm_reports.items():
-#     print(tm)
-#     print(rep)
 
 window = Tk()
 window.title("COMP")

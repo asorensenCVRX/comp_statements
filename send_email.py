@@ -1,5 +1,3 @@
-# must pip install pywin32
-import pandas
 import win32com.client
 import html
 import os

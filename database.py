@@ -1,8 +1,10 @@
 import pandas as pd
+import sqlalchemy.exc
 from sqlalchemy.engine import URL, create_engine
 from VARIABLES import comp_mm, payout_table, am_comp, fce_info, am_info, tm_reports
 from azure.identity import DefaultAzureCredential
 import struct
+from pprint import pprint
 
 # connection parameters
 server = 'tcp:ods-sql-server-us.database.windows.net'
@@ -56,7 +58,13 @@ def get_queries(conn):
     results = {}
     for key, query in queries.items():
         print(f"Fetching {key} info...")
-        results[key] = pd.read_sql_query(query, conn)
+        try:
+            results[key] = pd.read_sql_query(query, conn)
+        except sqlalchemy.exc.ProgrammingError:
+            pprint(f"Error with {key}: \n {query}")
+            input("stop")
+        else:
+            print("Success")
 
     return results
 

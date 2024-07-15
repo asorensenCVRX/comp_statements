@@ -1,7 +1,7 @@
 # EVERY MONTH: change export path by editing the VBA in export_statements.xlsm
 
-comp_mm = '05'
-comp_month = 'May'
+comp_mm = '06'
+comp_month = 'June'
 
 tms = ['ccraigo@cvrx.com', 'dduffy@cvrx.com', 'ecorson@cvrx.com', 'jbuxton@cvrx.com', 'jclemmons@cvrx.com',
        'jrussell@cvrx.com', 'jsantoli@cvrx.com', 'jwyatt@cvrx.com', 'tbarker@cvrx.com']
@@ -33,4 +33,5 @@ payout_table = r"C:\Users\asorensen\PycharmProjects\comp_statements\SQL Queries\
 am_info = r"C:\Users\asorensen\PycharmProjects\comp_statements\SQL Queries\AM_INFO.sql"
 fce_info = r"C:\Users\asorensen\PycharmProjects\comp_statements\SQL Queries\FCE_INFO.sql"
 am_comp = r"C:\Users\asorensen\PycharmProjects\comp_statements\SQL Queries\comp_AM.sql"
+fce_comp = r"C:\Users\asorensen\PycharmProjects\comp_statements\SQL Queries\comp_FCE.sql"
 tm_reports = r"C:\Users\asorensen\PycharmProjects\comp_statements\SQL Queries\TM_direct_reports.sql"

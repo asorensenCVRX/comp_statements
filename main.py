@@ -7,8 +7,6 @@ from VARIABLES import (am_directory, am_prelim_directory, rm_directory, rm_preli
                        csr_prelim_directory, comp_mm, comp_month)
 from tkinter import *
 
-# payees = Payees()
-
 window = Tk()
 window.title("COMP")
 window.config(pady=20, padx=20)

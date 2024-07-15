@@ -1,7 +1,7 @@
 import pandas as pd
 import sqlalchemy.exc
 from sqlalchemy.engine import URL, create_engine
-from VARIABLES import comp_mm, payout_table, am_comp, fce_info, am_info, tm_reports
+from VARIABLES import comp_mm, payout_table, am_comp, fce_info, am_info, tm_reports, fce_comp
 from azure.identity import DefaultAzureCredential
 import struct
 from pprint import pprint
@@ -33,6 +33,7 @@ def get_queries(conn):
         "AM": am_info,
         "CSR": fce_info,
         "comp_AM": am_comp,
+        "comp_FCE": fce_comp,
         "TM_reports": tm_reports
     }
 
@@ -42,6 +43,7 @@ def get_queries(conn):
             sql_files[key] = file.read()
 
     sql_files["comp_AM"] = sql_files["comp_AM"].replace("REPLACEME", f"'2024_{comp_mm}'")
+    sql_files["comp_FCE"] = sql_files["comp_FCE"].replace("REPLACEME", f"'2024_{comp_mm}'")
     sql_files["tblPayout"] = sql_files["tblPayout"].replace("REPLACEME", f"'2024_{comp_mm}'")
 
     queries = {
@@ -50,7 +52,7 @@ def get_queries(conn):
         "RM": "select * from qryRoster_RM",
         "tblPayout": sql_files["tblPayout"],
         "comp_AM": sql_files["comp_AM"],
-        "comp_CSR": f"select * from qry_COMP_FCE_DETAIL where CLOSE_YYYYMM = '2024_{comp_mm}'",
+        "comp_CSR": sql_files["comp_FCE"],
         "comp_RM": f"select * from qry_COMP_RM_DETAIL where CLOSE_YYYYMM = '2024_{comp_mm}'",
         "TM_reports": sql_files["TM_reports"]
     }

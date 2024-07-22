@@ -41,6 +41,7 @@ FROM
             NULL,
             NULL,
             NULL,
+            NULL,
             PHYSICIAN,
             NULL,
             NULL,

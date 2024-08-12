@@ -112,6 +112,7 @@ def csr_statement(payees, **kwargs):
         rm = None if email else payees.csr_info[csr]['RM_EMAIL']
         terr = None if email else payees.csr_info[csr]['TERR_NM']
         base_bonus = None if email else payees.csr_info[csr]['BASE_BONUS']
+        quota = None if email else payees.csr_info[csr]['QUOTA']
         payout_df = payees.tblpayout[payees.tblpayout['EID'] == eid]
         comp_detail_df = payees.csr_comp_detail[payees.csr_comp_detail['SALES_CREDIT_FCE_EMAIL'] == eid]
 
@@ -130,6 +131,7 @@ def csr_statement(payees, **kwargs):
         sheet['B4'].value = terr
         sheet['B6'].value = base_bonus
         sheet['B7'].value = comp_month
+        sheet['B8'].value = quota
         wb.save(excel_file)
         wb.close()
 

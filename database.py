@@ -91,7 +91,8 @@ def get_csr_names(df):
             'EMAIL': row['REP_EMAIL'],
             'RM_EMAIL': row['RM_EMAIL'],
             'TERR_NM': row['TERR_NM'],
-            'BASE_BONUS': row['BASE_BONUS']
+            'BASE_BONUS': row['BASE_BONUS'],
+            'QUOTA': row['QUOTA']
         }
     return info
 

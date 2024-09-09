@@ -1,10 +1,11 @@
 # EVERY MONTH: change export path by editing the VBA in export_statements.xlsm
 
-comp_mm = '06'
-comp_month = 'June'
+comp_mm = '08'
+comp_month = 'August'
 
 tms = ['ccraigo@cvrx.com', 'dduffy@cvrx.com', 'ecorson@cvrx.com', 'jbuxton@cvrx.com', 'jclemmons@cvrx.com',
-       'jrussell@cvrx.com', 'jsantoli@cvrx.com', 'jwyatt@cvrx.com', 'tbarker@cvrx.com']
+       'jsantoli@cvrx.com', 'jwyatt@cvrx.com', 'tbarker@cvrx.com', 'scroxdale@cvrx.com',
+       'sfuller@cvrx.com', 'tbarker@cvrx.com']
 
 rms = ['jgarner@cvrx.com', 'kdenton@cvrx.com', 'jhorky@cvrx.com', 'ccastillo@cvrx.com']
 

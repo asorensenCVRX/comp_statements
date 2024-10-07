@@ -12,8 +12,8 @@ def export_to_excel(excel_file: str, tab: str, dataframe: pd.DataFrame):
 
 def am_statement(payees, **kwargs):
     """Exports all comp details to COMP_STATEMENT.xlsx, which can then be used to generate an official statement.
-    Optionally, you can pass in an email kwarg to view info for a single rep. Set export=True to run a VBA script to
-    generate a PDF statement."""
+    Optionally, you can pass in an email kwarg as a string to view info for a single rep, or as a list to view info
+    for multiple reps. Set export=True to run a VBA script to generate a PDF statement."""
     email = kwargs.get('email', None)
     print("Generating AM Statements...")
     for am in payees.am_info:
@@ -23,7 +23,7 @@ def am_statement(payees, **kwargs):
             eid = payees.am_info[am]['EMAIL']
             rm = payees.am_info[am]['RM_EMAIL']
             terr = payees.am_info[am]['TERR_NM']
-            payout_df = payees.tblpayout[payees.tblpayout['EID'] == eid]
+            payout_df = payees.tblpayout[(payees.tblpayout['EID'] == eid) & (payees.tblpayout['ROLE'] == 'REP')]
             comp_detail_df = payees.am_comp_detail[payees.am_comp_detail['SALES_CREDIT_REP_EMAIL'] == eid]
 
             excel_file = am_comp_file
@@ -70,7 +70,7 @@ def rm_statement(payees, **kwargs):
             name = rm
             eid = payees.rm_info[rm]['EMAIL']
             region = payees.rm_info[rm]['REGION']
-            payout_df = payees.tblpayout[payees.tblpayout['EID'] == eid]
+            payout_df = payees.tblpayout[(payees.tblpayout['EID'] == eid) & (payees.tblpayout['ROLE'] == 'RM')]
             comp_detail_df = payees.rm_comp_detail[payees.rm_comp_detail['SALES_CREDIT_RM_EMAIL'] == eid]
 
             excel_file = rm_comp_file
@@ -116,7 +116,7 @@ def csr_statement(payees, **kwargs):
             terr = payees.csr_info[csr]['TERR_NM']
             base_bonus = payees.csr_info[csr]['BASE_BONUS']
             quota = payees.csr_info[csr]['QUOTA']
-            payout_df = payees.tblpayout[payees.tblpayout['EID'] == eid]
+            payout_df = payees.tblpayout[(payees.tblpayout['EID'] == eid) & (payees.tblpayout['ROLE'] == 'FCE')]
             comp_detail_df = payees.csr_comp_detail[payees.csr_comp_detail['SALES_CREDIT_FCE_EMAIL'] == eid]
 
             excel_file = csr_comp_file

@@ -51,7 +51,8 @@ def send_rm_email(payees, month_mm: str, month_name: str, is_prelim: bool):
             template = rm_prelim_email if is_prelim \
                 else rm_official_email
             email = SendEmail(template=template, recipient_fullname=key, recipient_first_name=value['FNAME'],
-                              recipient_email=value['EMAIL'], manager_email=None, subject=subject, attachment_path=path)
+                              recipient_email=value['EMAIL'], manager_email='rjohn@cvrx.com', subject=subject,
+                              attachment_path=path)
             email.send_email()
         except Exception as e:
             print(f"There was an error {e}.\nUnable to send email to {key}: {value}")

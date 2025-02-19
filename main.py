@@ -1,10 +1,10 @@
 from database import Payees
 from pprint import pprint
 from add_watermark import add_directory_watermark
-from send_email import send_am_email, send_rm_email, send_csr_email
-from statements import am_statement, rm_statement, csr_statement
-from VARIABLES import (am_directory, am_prelim_directory, rm_directory, rm_prelim_directory, csr_directory,
-                       csr_prelim_directory, comp_mm, comp_month)
+from send_email import send_tm_email, send_asd_email, send_cs_email
+from statements import tm_statement, asd_statements, cs_statements
+from VARIABLES import (tm_directory, tm_prelim_directory, asd_directory, asd_prelim_directory, cs_directory,
+                       cs_prelim_directory, comp_mm, comp_month)
 from tkinter import *
 
 window = Tk()
@@ -12,31 +12,32 @@ window.title("COMP")
 window.config(pady=20, padx=20)
 
 
-# To create only a single statement instead of looping through everyone (for debugging purposes):
+# To create only a single statement instead of looping through everyone:
 # add email='employee_email' kwarg to the statement expression (after export=...)
+# You can also pass in the email kwarg as a list to generate multiple statements
 def start():
     payees = Payees()
-    if checked_state_am.get():
-        am_statement(payees, export=get_radio(radio_state_export))
+    if checked_state_tm.get():
+        tm_statement(payees, export=get_radio(radio_state_export))
         if get_radio(radio_state_prelim):
-            add_directory_watermark(am_directory, am_prelim_directory)
-    if checked_state_csr.get():
-        csr_statement(payees, export=get_radio(radio_state_export))
+            add_directory_watermark(tm_directory, tm_prelim_directory)
+    if checked_state_cs.get():
+        cs_statements(payees, export=get_radio(radio_state_export))
         if get_radio(radio_state_prelim):
-            add_directory_watermark(csr_directory, csr_prelim_directory)
-    if checked_state_rm.get():
-        rm_statement(payees, export=get_radio(radio_state_export))
+            add_directory_watermark(cs_directory, cs_prelim_directory)
+    if checked_state_asd.get():
+        asd_statements(payees, export=get_radio(radio_state_export))
         if get_radio(radio_state_prelim):
-            add_directory_watermark(rm_directory, rm_prelim_directory)
+            add_directory_watermark(asd_directory, asd_prelim_directory)
     if get_radio(radio_state_email):
         if get_radio(radio_state_prelim):
-            send_am_email(payees, comp_mm, comp_month, is_prelim=True)
-            send_rm_email(payees, comp_mm, comp_month, is_prelim=True)
-            send_csr_email(payees, comp_mm, comp_month, is_prelim=True)
+            send_tm_email(payees, comp_mm, comp_month, is_prelim=True)
+            send_asd_email(payees, comp_mm, comp_month, is_prelim=True)
+            send_cs_email(payees, comp_mm, comp_month, is_prelim=True)
         else:
-            send_am_email(payees, comp_mm, comp_month, is_prelim=False)
-            send_rm_email(payees, comp_mm, comp_month, is_prelim=False)
-            send_csr_email(payees, comp_mm, comp_month, is_prelim=False)
+            send_tm_email(payees, comp_mm, comp_month, is_prelim=False)
+            send_asd_email(payees, comp_mm, comp_month, is_prelim=False)
+            send_cs_email(payees, comp_mm, comp_month, is_prelim=False)
     window.destroy()
 
 
@@ -65,15 +66,15 @@ checkbutton_label = Label(text="Create statements for which roles?", pady=10)
 checkbutton_label.pack()
 
 # checkbutton options
-checked_state_am = BooleanVar()
-checked_state_csr = BooleanVar()
-checked_state_rm = BooleanVar()
-am_button = Checkbutton(text="AMs", variable=checked_state_am)
-am_button.pack()
-csr_button = Checkbutton(text="CSRs", variable=checked_state_csr)
-csr_button.pack()
-rm_button = Checkbutton(text="RMs", variable=checked_state_rm)
-rm_button.pack()
+checked_state_tm = BooleanVar()
+checked_state_cs = BooleanVar()
+checked_state_asd = BooleanVar()
+tm_button = Checkbutton(text="TMs", variable=checked_state_tm)
+tm_button.pack()
+cs_button = Checkbutton(text="CSs", variable=checked_state_cs)
+cs_button.pack()
+asd_button = Checkbutton(text="ASDs", variable=checked_state_asd)
+asd_button.pack()
 
 # header for radio button options
 export_label = Label(text="Export statements to PDF?", pady=10)

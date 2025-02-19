@@ -28,4 +28,4 @@ WHERE
 -- WHERE
 --     TRY_CAST(value AS decimal(15, 2)) IS NULL
 --     AND value IS NOT NULL
---     AND YYYYMM = '2024_06'
+--     AND YYYYMM = '2024_12'

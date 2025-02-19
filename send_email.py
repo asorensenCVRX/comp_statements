@@ -1,32 +1,26 @@
 import win32com.client
 import html
 import os
-from VARIABLES import (am_prelim_email, rm_prelim_email, am_official_email, rm_official_email, am_prelim_directory,
-                       am_directory, csr_prelim_directory, csr_directory, rm_prelim_directory, rm_directory)
+from VARIABLES import (rep_prelim_email, asd_prelim_email, rep_official_email, asd_official_email, tm_prelim_directory,
+                       tm_directory, cs_prelim_directory, cs_directory, asd_prelim_directory, asd_directory)
 
 
-def send_am_email(payees, month_mm: str, month_name: str, is_prelim: bool):
-    print("Sending AM prelim emails...") if is_prelim \
-        else print("Sending AM official emails...")
-    for key, value in payees.am_info.items():
+def send_tm_email(payees, month_mm: str, month_name: str, is_prelim: bool):
+    print("Sending TM prelim emails...") if is_prelim \
+        else print("Sending TM official emails...")
+    for key, value in payees.tm_info.items():
         try:
-            folder = am_prelim_directory if is_prelim \
-                else am_directory
-            file_name = f'PRELIMINARY_{key}_2024_{month_mm}.pdf' if is_prelim \
-                else f'{key}_2024_{month_mm}.pdf'
+            folder = tm_prelim_directory if is_prelim \
+                else tm_directory
+            file_name = f'PRELIMINARY_{key}_2025_{month_mm}.pdf' if is_prelim \
+                else f'{key}_2025_{month_mm}.pdf'
             path = os.path.join(folder, file_name)
             subject = f"PRELIMINARY {month_name} Comp Statement: {value['TERR_NM']}" if is_prelim \
                 else f"{month_name} Comp Statement: {value['TERR_NM']}"
-            # Check if rep reports to a TM; if so, add the rep's TM and RM as managers so both get CC'd
-            manager_email = None
-            for tm, rep in payees.tm_reports.items():
-                if value["EMAIL"] in rep:
-                    manager_email = f"{value['RM_EMAIL']}; {tm}"
-                    break
-                else:
-                    manager_email = value['RM_EMAIL']
-            template = am_prelim_email if is_prelim \
-                else am_official_email
+
+            manager_email = value['RM_EMAIL']
+            template = rep_prelim_email if is_prelim \
+                else rep_official_email
             email = SendEmail(template=template, recipient_fullname=key, recipient_first_name=value['FNAME_REP'],
                               recipient_email=value['EMAIL'], manager_email=manager_email, subject=subject,
                               attachment_path=path)
@@ -36,20 +30,20 @@ def send_am_email(payees, month_mm: str, month_name: str, is_prelim: bool):
             continue
 
 
-def send_rm_email(payees, month_mm: str, month_name: str, is_prelim: bool):
-    print("Sending RM prelim emails...") if is_prelim \
-        else print("Sending RM official emails...")
-    for key, value in payees.rm_info.items():
+def send_asd_email(payees, month_mm: str, month_name: str, is_prelim: bool):
+    print("Sending ASD prelim emails...") if is_prelim \
+        else print("Sending ASD official emails...")
+    for key, value in payees.asd_info.items():
         try:
-            folder = rm_prelim_directory if is_prelim \
-                else rm_directory
-            file_name = f'PRELIMINARY_{key}_2024_{month_mm}.pdf' if is_prelim \
-                else f"{key}_2024_{month_mm}.pdf"
+            folder = asd_prelim_directory if is_prelim \
+                else asd_directory
+            file_name = f'PRELIMINARY_{value["FNAME"]} {value["LNAME"]}_2025_{month_mm}.pdf' if is_prelim \
+                else f"{value["FNAME"]} {value["LNAME"]}_2025_{month_mm}.pdf"
             path = os.path.join(folder, file_name)
             subject = f"PRELIMINARY {month_name} Comp Statement: {value['REGION']}" if is_prelim \
                 else f"{month_name} Comp Statement: {value['REGION']}"
-            template = rm_prelim_email if is_prelim \
-                else rm_official_email
+            template = asd_prelim_email if is_prelim \
+                else asd_official_email
             email = SendEmail(template=template, recipient_fullname=key, recipient_first_name=value['FNAME'],
                               recipient_email=value['EMAIL'], manager_email='rjohn@cvrx.com', subject=subject,
                               attachment_path=path)
@@ -59,20 +53,20 @@ def send_rm_email(payees, month_mm: str, month_name: str, is_prelim: bool):
             continue
 
 
-def send_csr_email(payees, month_mm: str, month_name: str, is_prelim: bool):
-    print("Sending CSR prelim emails...") if is_prelim \
-        else print("Sending CSR official emails...")
-    for key, value in payees.csr_info.items():
+def send_cs_email(payees, month_mm: str, month_name: str, is_prelim: bool):
+    print("Sending CS prelim emails...") if is_prelim \
+        else print("Sending CS official emails...")
+    for key, value in payees.cs_info.items():
         try:
-            folder = csr_prelim_directory if is_prelim \
-                else csr_directory
-            file_name = f'PRELIMINARY_{key}_2024_{month_mm}.pdf' if is_prelim \
-                else f'{key}_2024_{month_mm}.pdf'
+            folder = cs_prelim_directory if is_prelim \
+                else cs_directory
+            file_name = f'PRELIMINARY_{key}_2025_{month_mm}.pdf' if is_prelim \
+                else f'{key}_2025_{month_mm}.pdf'
             path = os.path.join(folder, file_name)
             subject = f"PRELIMINARY {month_name} Comp Statement: {value['TERR_NM']}" if is_prelim \
                 else f"{month_name} Comp Statement: {value['TERR_NM']}"
-            template = am_prelim_email if is_prelim \
-                else am_official_email
+            template = rep_prelim_email if is_prelim \
+                else rep_official_email
             email = SendEmail(template=template, recipient_fullname=key, recipient_first_name=value['FNAME_REP'],
                               recipient_email=value['EMAIL'], manager_email=value['RM_EMAIL'], subject=subject,
                               attachment_path=path)
@@ -103,8 +97,6 @@ class SendEmail:
         mail.Subject = self.subject
         mail.To = self.email
         if self.manager_email is not None:
-            mail.CC = f"{self.manager_email}; jmoore@cvrx.com"
-        else:
-            mail.CC = "jmoore@cvrx.com"
+            mail.CC = f"{self.manager_email}"
         mail.Attachments.Add(self.attachment)
         mail.Send()

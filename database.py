@@ -52,7 +52,7 @@ def get_queries(conn):
         "tblPayout": sql_files["tblPayout"],
         "comp_TM": sql_files["comp_TM"],
         "comp_CS": sql_files["comp_CS"],
-        "comp_ASD": f"select * from qry_COMP_ASD_DETAIL where CLOSE_YYYYMM = '2025_{comp_mm}'"
+        "comp_ASD": f"select * from qry_COMP_ASD_DETAIL where CLOSE_YYYYMM = '2025_{comp_mm}' AND SALES <> 0"
     }
 
     results = {}
@@ -76,7 +76,9 @@ def get_rep_names(df):
             'FNAME_REP': row['FNAME_REP'],
             'EMAIL': row['REP_EMAIL'],
             'RM_EMAIL': row['RM_EMAIL'],
-            'TERR_NM': row['TERR_NM']
+            'TERR_NM': row['TERR_NM'],
+            'THRESHOLD': row['THRESHOLD'],
+            'PLAN': row['PLAN']
         }
     return info
 
@@ -100,6 +102,7 @@ def get_asd_names(df):
     for index, row in df.iterrows():
         info[row['NAME']] = {
             'FNAME': row['FNAME'],
+            'LNAME': row['LNAME'],
             'EMAIL': row['EMP_EMAIL'],
             'REGION': row['REGION']
         }

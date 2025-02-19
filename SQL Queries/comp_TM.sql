@@ -1,0 +1,10 @@
+SELECT
+    *
+FROM
+    qry_COMP_TM_DETAIL
+WHERE
+    CLOSE_YYYYMM = REPLACEME
+    AND STAGENAME = 'Revenue Recognized'
+    AND SALES <> 0
+ORDER BY
+    CLOSEDATE

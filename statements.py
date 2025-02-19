@@ -23,6 +23,8 @@ def tm_statement(payees, **kwargs: list):
             eid = payees.tm_info[tm]['EMAIL']
             asd = payees.tm_info[tm]['RM_EMAIL']
             terr = payees.tm_info[tm]['TERR_NM']
+            threshold = payees.tm_info[tm]['THRESHOLD']
+            plan = payees.tm_info[tm]['PLAN']
             payout_df = payees.tblpayout[(payees.tblpayout['EID'] == eid) & (payees.tblpayout['ROLE'] == 'TM')]
             comp_detail_df = payees.tm_comp_detail[payees.tm_comp_detail['SALES_CREDIT_REP_EMAIL'] == eid]
 
@@ -43,6 +45,8 @@ def tm_statement(payees, **kwargs: list):
             sheet['B4'].value = terr
             sheet['B5'].value = 'Territory Manager'
             sheet['B6'].value = comp_month
+            sheet['B7'].value = threshold
+            sheet['B8'].value = plan
             wb.save(excel_file)
             wb.close()
             # break
@@ -63,14 +67,16 @@ def asd_statements(payees, **kwargs: list):
         statement."""
     email = kwargs.get('email', None)
     print("Generating ASD Statements...")
-    for asd in payees.rm_info:
-        if email is None or payees.rm_info[asd]['EMAIL'] in email:
+    for asd in payees.asd_info:
+        if email is None or payees.asd_info[asd]['EMAIL'] in email:
             # get the info for only the current loop rep
             name = asd
-            eid = payees.rm_info[asd]['EMAIL']
-            region = payees.rm_info[asd]['REGION']
+            fname = payees.asd_info[asd]['FNAME']
+            lname = payees.asd_info[asd]['LNAME']
+            eid = payees.asd_info[asd]['EMAIL']
+            region = payees.asd_info[asd]['REGION']
             payout_df = payees.tblpayout[(payees.tblpayout['EID'] == eid) & (payees.tblpayout['ROLE'] == 'ASD')]
-            comp_detail_df = payees.asd_comp_detail[payees.asd_comp_detail['SALES_CREDIT_RM_EMAIL'] == eid]
+            comp_detail_df = payees.asd_comp_detail[payees.asd_comp_detail['SALES_CREDIT_ASD_EMAIL'] == eid]
 
             excel_file = asd_comp_file
 
@@ -82,10 +88,11 @@ def asd_statements(payees, **kwargs: list):
             sheet_name = 'info'
             sheet = wb[sheet_name]
             sheet['B1'].value = name
-            sheet['B2'].value = eid
-            sheet['B4'].value = region
-            sheet['B5'].value = 'Area Sales Director'
-            sheet['B6'].value = comp_month
+            sheet['B2'].value = fname
+            sheet['B3'].value = lname
+            sheet['B4'].value = eid
+            sheet['B5'].value = region
+            sheet['B7'].value = comp_month
             wb.save(excel_file)
             wb.close()
 
@@ -104,16 +111,16 @@ def cs_statements(payees, **kwargs: list):
     email = kwargs.get('email', None)
     print("Generating CS Statements...")
     for cs in payees.cs_info:
-        if email is None or payees.csr_info[cs]['EMAIL'] in email:
+        if email is None or payees.cs_info[cs]['EMAIL'] in email:
             # get the info for only the current loop rep
             name = cs
-            eid = payees.csr_info[cs]['EMAIL']
-            rm = payees.csr_info[cs]['RM_EMAIL']
-            terr = payees.csr_info[cs]['TERR_NM']
-            base_bonus = payees.csr_info[cs]['BASE_BONUS']
-            quota = payees.csr_info[cs]['PLAN']
+            eid = payees.cs_info[cs]['EMAIL']
+            rm = payees.cs_info[cs]['RM_EMAIL']
+            terr = payees.cs_info[cs]['TERR_NM']
+            base_bonus = payees.cs_info[cs]['BASE_BONUS']
+            quota = payees.cs_info[cs]['PLAN']
             payout_df = payees.tblpayout[(payees.tblpayout['EID'] == eid) & (payees.tblpayout['ROLE'] == 'CS')]
-            comp_detail_df = payees.cs_comp_detail[payees.cs_comp_detail['SALES_CREDIT_FCE_EMAIL'] == eid]
+            comp_detail_df = payees.cs_comp_detail[payees.cs_comp_detail['SALES_CREDIT_CS_EMAIL'] == eid]
 
             excel_file = cs_comp_file
 

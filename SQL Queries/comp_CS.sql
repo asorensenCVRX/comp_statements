@@ -6,7 +6,7 @@ WHERE
     CLOSE_YYYYMM = REPLACEME
     AND (
         (
-            SALES <> 0
+            SALES_COMMISSIONABLE <> 0
             AND STAGENAME = 'Revenue Recognized'
         )
         OR (

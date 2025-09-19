@@ -24,6 +24,7 @@ vba_excel_file = r"C:\Users\asorensen\PycharmProjects\comp_statements\Excel File
 tm_comp_file = r"C:\Users\asorensen\PycharmProjects\comp_statements\Excel Files\COMP_STATEMENT.xlsx"
 cs_comp_file = r"C:\Users\asorensen\PycharmProjects\comp_statements\Excel Files\COMP_STATEMENT_CS.xlsx"
 asd_comp_file = r"C:\Users\asorensen\PycharmProjects\comp_statements\Excel Files\COMP_STATEMENT_ASD.xlsx"
+atm_comp_file = r"C:\Users\asorensen\PycharmProjects\comp_statements\Excel Files\COMP_STATEMENT_ATM.xlsm"
 
 # SQL files
 payout_table = r"C:\Users\asorensen\PycharmProjects\comp_statements\SQL Queries\tblPayout.sql"

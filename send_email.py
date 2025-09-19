@@ -2,7 +2,8 @@ import win32com.client
 import html
 import os
 from VARIABLES import (rep_prelim_email, asd_prelim_email, rep_official_email, asd_official_email, tm_prelim_directory,
-                       tm_directory, cs_prelim_directory, cs_directory, asd_prelim_directory, asd_directory)
+                       tm_directory, cs_prelim_directory, cs_directory, asd_prelim_directory, asd_directory, atm_directory,
+                       atm_official_email)
 
 
 def send_tm_email(payees, month_mm: str, month_name: str, is_prelim: bool):
@@ -74,6 +75,28 @@ def send_cs_email(payees, month_mm: str, month_name: str, is_prelim: bool):
         except Exception as e:
             print(f"There was an error {e}.\nUnable to send email to {key}: {value}")
             continue
+
+
+def send_atm_email(payees, month_mm: str, month_name: str, is_prelim: bool):
+    if is_prelim:
+        pass
+    else:
+        print("Sending ATM emails...")
+        for key, value in payees.atm_info.items():
+            try:
+                file_name = f'{key}_2025_{month_mm}.pdf'
+                path = os.path.join(atm_directory, file_name)
+                subject = f"{month_name} Comp Statement: {value['TERR_NM']}"
+
+                manager_email = value['RM_EMAIL']
+                template = atm_official_email
+                email = SendEmail(template=template, recipient_fullname=key, recipient_first_name=value['FNAME_REP'],
+                                  recipient_email=value['EMAIL'], manager_email=manager_email, subject=subject,
+                                  attachment_path=path)
+                email.send_email()
+            except Exception as e:
+                print(f"There was an error {e}.\nUnable to send email to {key}: {value}")
+                continue
 
 
 class SendEmail:

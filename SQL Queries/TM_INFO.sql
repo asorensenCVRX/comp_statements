@@ -27,6 +27,6 @@ FROM
     ) AS Q ON R.REP_EMAIL = Q.EID
 WHERE
     [ROLE] = 'REP'
-    AND [isLATEST?] = 1
+    -- AND [isLATEST?] = 1
     AND ISNULL(DOT_YYYYMM, '2099_12') >= FORMAT(DATEADD(MONTH, -1, GETDATE()), 'yyyy_MM')
     AND DOH_YYYYMM < FORMAT(GETDATE(), 'yyyy_MM')

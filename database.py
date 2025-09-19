@@ -1,7 +1,7 @@
 import pandas as pd
 import sqlalchemy.exc
 from sqlalchemy.engine import URL, create_engine
-from VARIABLES import comp_mm, payout_table, tm_comp, cs_info, tm_info, cs_comp
+from VARIABLES import comp_mm, payout_table, tm_comp, cs_info, tm_info, cs_comp, atm_info
 from azure.identity import DefaultAzureCredential
 import struct
 from pprint import pprint
@@ -32,6 +32,7 @@ def get_queries(conn):
         "tblPayout": payout_table,
         "TM": tm_info,
         "CS": cs_info,
+        "ATM": atm_info,
         "comp_TM": tm_comp,
         "comp_CS": cs_comp,
     }
@@ -48,11 +49,12 @@ def get_queries(conn):
     queries = {
         "REP": sql_files["TM"],
         "CS": sql_files["CS"],
+        "ATM": sql_files["ATM"],
         "ASD": "select * from qryRoster_RM",
         "tblPayout": sql_files["tblPayout"],
         "comp_TM": sql_files["comp_TM"],
         "comp_CS": sql_files["comp_CS"],
-        "comp_ASD": f"select * from qry_COMP_ASD_DETAIL where CLOSE_YYYYMM = '2025_{comp_mm}' AND SALES <> 0"
+        "comp_ASD": f"select * from qry_COMP_ASD_DETAIL where CLOSE_YYYYMM = '2025_{comp_mm}' AND SALES_COMMISSIONABLE <> 0"
     }
 
     results = {}
@@ -109,6 +111,18 @@ def get_asd_names(df):
     return info
 
 
+def get_atm_names(df):
+    info = {}
+    for index, row in df.iterrows():
+        info[row['NAME_REP']] = {
+            'FNAME_REP': row['FNAME_REP'],
+            'EMAIL': row['REP_EMAIL'],
+            'RM_EMAIL': row['RM_EMAIL'],
+            'TERR_NM': row['TERR_NM']
+        }
+    return info
+
+
 class Payees:
     """Returns info on all active TM reps, CS reps, and ADSs as variables. Also returns the most recent entries in
     tblPayout as a pd.DataFrame."""
@@ -119,6 +133,7 @@ class Payees:
             results = get_queries(conn)
             self.tm_info = get_rep_names(results["REP"])
             self.cs_info = get_cs_names(results["CS"])
+            self.atm_info = get_atm_names(results["ATM"])
             self.asd_info = get_asd_names(results["ASD"])
             self.tblpayout = results["tblPayout"]
             self.tm_comp_detail = results["comp_TM"]

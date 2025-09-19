@@ -1,7 +1,7 @@
 from database import Payees
 from pprint import pprint
 from add_watermark import add_directory_watermark
-from send_email import send_tm_email, send_asd_email, send_cs_email
+from send_email import send_tm_email, send_asd_email, send_cs_email, send_atm_email
 from statements import tm_statement, asd_statements, cs_statements
 from VARIABLES import (tm_directory, tm_prelim_directory, asd_directory, asd_prelim_directory, cs_directory,
                        cs_prelim_directory, comp_mm, comp_month)
@@ -38,6 +38,7 @@ def start():
             send_tm_email(payees, comp_mm, comp_month, is_prelim=False)
             send_asd_email(payees, comp_mm, comp_month, is_prelim=False)
             send_cs_email(payees, comp_mm, comp_month, is_prelim=False)
+            send_atm_email(payees, comp_mm, comp_month, is_prelim=False)
     window.destroy()
 
 

@@ -1,5 +1,3 @@
-# EVERY MONTH: change export path by editing the VBA in export_statements.xlsm
-
 comp_mm = '08'
 comp_month = 'August'
 

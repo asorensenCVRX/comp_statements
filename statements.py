@@ -2,8 +2,6 @@ from export_pdf import export_to_pdf, export_atm_pdf
 import pandas as pd
 from openpyxl import load_workbook
 from VARIABLES import comp_month, tm_comp_file, cs_comp_file, asd_comp_file
-import win32com.client
-import time
 
 
 def export_to_excel(excel_file: str, tab: str, dataframe: pd.DataFrame):

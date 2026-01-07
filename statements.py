@@ -10,11 +10,10 @@ def export_to_excel(excel_file: str, tab: str, dataframe: pd.DataFrame):
         dataframe.to_excel(writer, sheet_name=tab, index=False)
 
 
-def tm_statement(payees, **kwargs: list):
+def tm_statement(payees, email: list[str] | None = None, export: bool = False):
     """Exports all comp details to COMP_STATEMENT.xlsx, which can then be used to generate an official statement.
     Optionally, you can pass in an email kwarg as a string to view info for a single rep, or as a list to view info
     for multiple reps. Set export=True to run a VBA script to generate a PDF statement."""
-    email = kwargs.get('email', None)
     print("Generating TM Statements...")
     for tm in payees.tm_info:
         if email is None or payees.tm_info[tm]['EMAIL'] in email:
@@ -51,9 +50,6 @@ def tm_statement(payees, **kwargs: list):
             wb.close()
             # break
 
-            # set kwarg export=True to generate a PDF statement from the Excel file
-            export = kwargs.get('export', None)
-
             # run the specified VBA script to export as a PDF
             if export:
                 export_to_pdf("AMExportPDF")
@@ -61,11 +57,10 @@ def tm_statement(payees, **kwargs: list):
             continue
 
 
-def asd_statements(payees, **kwargs: list):
+def asd_statements(payees, email: list[str] | None = None, export: bool = False):
     """Exports all comp details to COMP_STATEMENT_RM.xlsx, which can then be used to generate an official statement.
         Optionally, you can pass in an email kwarg to view info for a single rep. Set export=True to generate a PDF
         statement."""
-    email = kwargs.get('email', None)
     print("Generating ASD Statements...")
     for asd in payees.asd_info:
         if email is None or payees.asd_info[asd]['EMAIL'] in email:
@@ -96,19 +91,16 @@ def asd_statements(payees, **kwargs: list):
             wb.save(excel_file)
             wb.close()
 
-            # set kwarg export=True to generate a PDF statement from the Excel file
-            export = kwargs.get('export', None)
             if export:
                 export_to_pdf("RMExportPDF")
         else:
             continue
 
 
-def cs_statements(payees, **kwargs: list):
+def cs_statements(payees, email: list[str] | None = None, export: bool = False):
     """Exports all comp details to COMP_STATEMENT_CSR.xlsx, which can then be used to generate an official statement.
         Optionally, you can pass in an email kwarg to view info for a single rep. Set export=True to generate a PDF
         statement."""
-    email = kwargs.get('email', None)
     print("Generating CS Statements...")
     for cs in payees.cs_info:
         if email is None or payees.cs_info[cs]['EMAIL'] in email:
@@ -141,8 +133,6 @@ def cs_statements(payees, **kwargs: list):
             wb.save(excel_file)
             wb.close()
 
-            # set kwarg export=True to generate a PDF statement from the Excel file
-            export = kwargs.get('export', None)
             if export:
                 export_to_pdf("CSRExportPDF")
         else:

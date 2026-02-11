@@ -1,21 +1,21 @@
-comp_mm = '08'
-comp_month = 'August'
+comp_mm = '01'
+comp_month = 'January'
 
 # email module
-rep_prelim_email = r"C:\Users\asorensen\OneDrive - CVRx Inc\2025_COMP_OPS\Comp Statements\TM Prelim msg.oft"
-asd_prelim_email = r"C:\Users\asorensen\OneDrive - CVRx Inc\2025_COMP_OPS\Comp Statements\ASD Prelim msg.oft"
-rep_official_email = r"C:\Users\asorensen\OneDrive - CVRx Inc\2025_COMP_OPS\Comp Statements\TM msg.oft"
-asd_official_email = r"C:\Users\asorensen\OneDrive - CVRx Inc\2025_COMP_OPS\Comp Statements\ASD msg.oft"
-atm_official_email = r"C:\Users\asorensen\OneDrive - CVRx Inc\2025_COMP_OPS\Comp Statements\ATM msg.oft"
+rep_prelim_email = r"C:\Users\asorensen\OneDrive - CVRx Inc\2026_COMP_OPS\Comp Statements\TM Prelim msg.oft"
+asd_prelim_email = r"C:\Users\asorensen\OneDrive - CVRx Inc\2026_COMP_OPS\Comp Statements\ASD Prelim msg.oft"
+rep_official_email = r"C:\Users\asorensen\OneDrive - CVRx Inc\2026_COMP_OPS\Comp Statements\TM msg.oft"
+asd_official_email = r"C:\Users\asorensen\OneDrive - CVRx Inc\2026_COMP_OPS\Comp Statements\ASD msg.oft"
+atm_official_email = r"C:\Users\asorensen\OneDrive - CVRx Inc\2026_COMP_OPS\Comp Statements\ATM msg.oft"
 
 # exported pdf directories
-tm_directory = fr"C:\Users\asorensen\OneDrive - CVRx Inc\2025_COMP_OPS\Comp Statements\2025_{comp_mm}\TM"
+tm_directory = fr"C:\Users\asorensen\OneDrive - CVRx Inc\2026_COMP_OPS\Comp Statements\2026_{comp_mm}\TM"
 tm_prelim_directory = tm_directory + r"\PRELIMINARIES"
-asd_directory = fr"C:\Users\asorensen\OneDrive - CVRx Inc\2025_COMP_OPS\Comp Statements\2025_{comp_mm}\ASD"
+asd_directory = fr"C:\Users\asorensen\OneDrive - CVRx Inc\2026_COMP_OPS\Comp Statements\2026_{comp_mm}\ASD"
 asd_prelim_directory = asd_directory + r"\PRELIMINARIES"
-cs_directory = fr"C:\Users\asorensen\OneDrive - CVRx Inc\2025_COMP_OPS\Comp Statements\2025_{comp_mm}\CS"
+cs_directory = fr"C:\Users\asorensen\OneDrive - CVRx Inc\2026_COMP_OPS\Comp Statements\2026_{comp_mm}\CS"
 cs_prelim_directory = cs_directory + r"\PRELIMINARIES"
-atm_directory = fr"C:\Users\asorensen\OneDrive - CVRx Inc\2025_COMP_OPS\Comp Statements\2025_{comp_mm}\ATM"
+atm_directory = fr"C:\Users\asorensen\OneDrive - CVRx Inc\2026_COMP_OPS\Comp Statements\2026_{comp_mm}\ATM"
 
 # excel files for generating statements
 vba_excel_file = r"C:\Users\asorensen\PycharmProjects\comp_statements\Excel Files\export_statements.xlsm"

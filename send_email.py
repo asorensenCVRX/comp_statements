@@ -13,11 +13,11 @@ def send_tm_email(payees, month_mm: str, month_name: str, is_prelim: bool):
         try:
             folder = tm_prelim_directory if is_prelim \
                 else tm_directory
-            file_name = f'PRELIMINARY_{key}_2025_{month_mm}.pdf' if is_prelim \
-                else f'{key}_2025_{month_mm}.pdf'
+            file_name = f'PRELIMINARY_{key}_2026_{month_mm}.pdf' if is_prelim \
+                else f'{key}_2026_{month_mm}.pdf'
             path = os.path.join(folder, file_name)
-            subject = f"PRELIMINARY {month_name} Comp Statement: {value['TERR_NM']}" if is_prelim \
-                else f"{month_name} Comp Statement: {value['TERR_NM']}"
+            subject = f"PRELIMINARY {month_name} 2026 Comp Statement: {value['TERR_NM']}" if is_prelim \
+                else f"{month_name} 2026 Comp Statement: {value['TERR_NM']}"
 
             manager_email = value['RM_EMAIL']
             template = rep_prelim_email if is_prelim \
@@ -38,11 +38,11 @@ def send_asd_email(payees, month_mm: str, month_name: str, is_prelim: bool):
         try:
             folder = asd_prelim_directory if is_prelim \
                 else asd_directory
-            file_name = f'PRELIMINARY_{value["FNAME"]} {value["LNAME"]}_2025_{month_mm}.pdf' if is_prelim \
-                else f"{value["FNAME"]} {value["LNAME"]}_2025_{month_mm}.pdf"
+            file_name = f'PRELIMINARY_{value["FNAME"]} {value["LNAME"]}_2026_{month_mm}.pdf' if is_prelim \
+                else f"{value["FNAME"]} {value["LNAME"]}_2026_{month_mm}.pdf"
             path = os.path.join(folder, file_name)
-            subject = f"PRELIMINARY {month_name} Comp Statement: {value['REGION']}" if is_prelim \
-                else f"{month_name} Comp Statement: {value['REGION']}"
+            subject = f"PRELIMINARY {month_name} 2026 Comp Statement: {value['REGION']}" if is_prelim \
+                else f"{month_name} 2026 Comp Statement: {value['REGION']}"
             template = asd_prelim_email if is_prelim \
                 else asd_official_email
             email = SendEmail(template=template, recipient_fullname=key, recipient_first_name=value['FNAME'],
@@ -61,11 +61,11 @@ def send_cs_email(payees, month_mm: str, month_name: str, is_prelim: bool):
         try:
             folder = cs_prelim_directory if is_prelim \
                 else cs_directory
-            file_name = f'PRELIMINARY_{key}_2025_{month_mm}.pdf' if is_prelim \
-                else f'{key}_2025_{month_mm}.pdf'
+            file_name = f'PRELIMINARY_{key}_2026_{month_mm}.pdf' if is_prelim \
+                else f'{key}_2026_{month_mm}.pdf'
             path = os.path.join(folder, file_name)
-            subject = f"PRELIMINARY {month_name} Comp Statement: {value['TERR_NM']}" if is_prelim \
-                else f"{month_name} Comp Statement: {value['TERR_NM']}"
+            subject = f"PRELIMINARY {month_name} 2026 Comp Statement: {value['TERR_NM']}" if is_prelim \
+                else f"{month_name} 2026 Comp Statement: {value['TERR_NM']}"
             template = rep_prelim_email if is_prelim \
                 else rep_official_email
             email = SendEmail(template=template, recipient_fullname=key, recipient_first_name=value['FNAME_REP'],
@@ -84,9 +84,9 @@ def send_atm_email(payees, month_mm: str, month_name: str, is_prelim: bool):
         print("Sending ATM emails...")
         for key, value in payees.atm_info.items():
             try:
-                file_name = f'{key}_2025_{month_mm}.pdf'
+                file_name = f'{key}_2026_{month_mm}.pdf'
                 path = os.path.join(atm_directory, file_name)
-                subject = f"{month_name} Comp Statement: {value['TERR_NM']}"
+                subject = f"{month_name} 2026 Comp Statement: {value['TERR_NM']}"
 
                 manager_email = value['RM_EMAIL']
                 template = atm_official_email

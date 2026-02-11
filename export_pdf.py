@@ -3,15 +3,19 @@ from VARIABLES import vba_excel_file, atm_comp_file, comp_month
 import time
 import pythoncom
 
-
 # must pip install pywin32
 
 def export_to_pdf(macro_name):
-    """Available macros are "AMExportPDF", "RMExportPDF", and "CSRExportPDF"."""
+    """Run a statement-export macro in a dedicated Excel instance and always close it."""
+    pythoncom.CoInitialize()
+    excel = None
+    workbook = None
 
     try:
-        # Create an instance of Excel application
-        excel = win32com.client.Dispatch("Excel.Application")
+        # DispatchEx starts a separate Excel process so we don't attach to a user-open instance.
+        excel = win32com.client.DispatchEx("Excel.Application")
+        excel.Visible = False
+        excel.DisplayAlerts = False
 
         # Open the Excel file
         workbook = excel.Workbooks.Open(vba_excel_file)
@@ -23,8 +27,22 @@ def export_to_pdf(macro_name):
 
         # Close the workbook and Excel application
         workbook.Close(SaveChanges=True)
+        workbook = None
     except Exception as e:
         print(f"An error occurred: {e}")
+        if workbook is not None:
+            try:
+                workbook.Close(SaveChanges=False)
+            except Exception:
+                pass
+        raise
+    finally:
+        if excel is not None:
+            try:
+                excel.Quit()
+            except Exception:
+                pass
+        pythoncom.CoUninitialize()
 
     # quitting excel is not necessary because the VBA script does it
     # finally:
@@ -49,7 +67,7 @@ def export_atm_pdf():
     workbook = None
     try:
         print("Generating ATM Statements...")
-        excel = win32com.client.Dispatch("Excel.Application")
+        excel = win32com.client.DispatchEx("Excel.Application")
         excel.Visible = False
         excel.DisplayAlerts = False
 
@@ -57,7 +75,7 @@ def export_atm_pdf():
 
         # 1) Write value to ATM!B6
         ws = workbook.Worksheets("ATM")
-        ws.Range("B6").Value = comp_month + " 2025"
+        ws.Range("B6").Value = comp_month + " 2026"
 
         # 2) Refresh all connections and wait for completion
         workbook.RefreshAll()
@@ -103,6 +121,7 @@ def export_atm_pdf():
                 workbook.Close(SaveChanges=False)
             except Exception:
                 pass
+        raise
     finally:
         if excel is not None:
             try:

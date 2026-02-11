@@ -42,9 +42,9 @@ def get_queries(conn):
         with open(path) as file:
             sql_files[key] = file.read()
 
-    sql_files["comp_TM"] = sql_files["comp_TM"].replace("REPLACEME", f"'2025_{comp_mm}'")
-    sql_files["comp_CS"] = sql_files["comp_CS"].replace("REPLACEME", f"'2025_{comp_mm}'")
-    sql_files["tblPayout"] = sql_files["tblPayout"].replace("REPLACEME", f"'2025_{comp_mm}'")
+    sql_files["comp_TM"] = sql_files["comp_TM"].replace("REPLACEME", f"'2026_{comp_mm}'")
+    sql_files["comp_CS"] = sql_files["comp_CS"].replace("REPLACEME", f"'2026_{comp_mm}'")
+    sql_files["tblPayout"] = sql_files["tblPayout"].replace("REPLACEME", f"'2026_{comp_mm}'")
 
     queries = {
         "REP": sql_files["TM"],
@@ -54,7 +54,7 @@ def get_queries(conn):
         "tblPayout": sql_files["tblPayout"],
         "comp_TM": sql_files["comp_TM"],
         "comp_CS": sql_files["comp_CS"],
-        "comp_ASD": f"select * from qry_COMP_ASD_DETAIL where CLOSE_YYYYMM = '2025_{comp_mm}' AND SALES_COMMISSIONABLE <> 0"
+        "comp_ASD": f"select * from qry_COMP_ASD_DETAIL where CLOSE_YYYYMM = '2026_{comp_mm}' AND SALES_COMMISSIONABLE <> 0"
     }
 
     results = {}

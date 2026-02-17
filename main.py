@@ -3,8 +3,8 @@ from pprint import pprint
 from add_watermark import add_directory_watermark
 from send_email import send_tm_email, send_asd_email, send_cs_email, send_atm_email
 from statements import tm_statement, asd_statements, cs_statements, atm_statements
-from VARIABLES import (tm_directory, tm_prelim_directory, asd_directory, asd_prelim_directory, cs_directory,
-                       cs_prelim_directory, comp_mm, comp_month)
+from VARIABLES import (tm_directory, tm_prelim_directory, atm_directory, atm_prelim_directory, asd_directory,
+                       asd_prelim_directory, cs_directory, cs_prelim_directory, comp_mm, comp_month)
 from tkinter import *
 
 window = Tk()
@@ -17,26 +17,29 @@ window.config(pady=20, padx=20)
 # You can also pass in the email kwarg as a list to generate multiple statements
 def start():
     payees = Payees()
+    export_tf = get_radio(radio_state_export)
+    prelim_tf = get_radio(radio_state_prelim)
+    email_tf = get_radio(radio_state_email)
+
     if checked_state_tm.get():
-        tm_statement(payees, export=get_radio(radio_state_export))
-        if get_radio(radio_state_prelim):
+        tm_statement(payees, export=export_tf)
+        if prelim_tf:
             add_directory_watermark(tm_directory, tm_prelim_directory)
+    if checked_state_atm.get():
+        atm_statements(payees, export=export_tf)
+        if prelim_tf:
+            add_directory_watermark(atm_directory, atm_prelim_directory)
     if checked_state_cs.get():
-        cs_statements(payees, export=get_radio(radio_state_export))
-        if get_radio(radio_state_prelim):
+        cs_statements(payees, export=export_tf)
+        if prelim_tf:
             add_directory_watermark(cs_directory, cs_prelim_directory)
     if checked_state_asd.get():
-        asd_statements(payees, export=get_radio(radio_state_export))
-        if get_radio(radio_state_prelim):
+        asd_statements(payees, export=export_tf)
+        if prelim_tf:
             add_directory_watermark(asd_directory, asd_prelim_directory)
-    if checked_state_atm.get():
-        if get_radio(radio_state_prelim):
-            atm_statements(prelim=True)
-        else:
-            atm_statements(prelim=False)
 
-    if get_radio(radio_state_email):
-        if get_radio(radio_state_prelim):
+    if email_tf:
+        if prelim_tf:
             send_tm_email(payees, comp_mm, comp_month, is_prelim=True)
             send_asd_email(payees, comp_mm, comp_month, is_prelim=True)
             send_cs_email(payees, comp_mm, comp_month, is_prelim=True)
@@ -74,17 +77,17 @@ checkbutton_label.pack()
 
 # checkbutton options
 checked_state_tm = BooleanVar()
+checked_state_atm = BooleanVar()
 checked_state_cs = BooleanVar()
 checked_state_asd = BooleanVar()
-checked_state_atm = BooleanVar()
 tm_button = Checkbutton(text="TMs", variable=checked_state_tm)
 tm_button.pack()
+atm_button = Checkbutton(text="ATMs", variable=checked_state_atm)
+atm_button.pack()
 cs_button = Checkbutton(text="CSs", variable=checked_state_cs)
 cs_button.pack()
 asd_button = Checkbutton(text="ASDs", variable=checked_state_asd)
 asd_button.pack()
-atm_button = Checkbutton(text="ATMs", variable=checked_state_atm)
-atm_button.pack()
 
 # header for radio button options
 export_label = Label(text="Export statements to PDF?", pady=10)

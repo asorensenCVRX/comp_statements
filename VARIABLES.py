@@ -6,7 +6,6 @@ rep_prelim_email = r"C:\Users\asorensen\OneDrive - CVRx Inc\2026_COMP_OPS\Comp S
 asd_prelim_email = r"C:\Users\asorensen\OneDrive - CVRx Inc\2026_COMP_OPS\Comp Statements\ASD Prelim msg.oft"
 rep_official_email = r"C:\Users\asorensen\OneDrive - CVRx Inc\2026_COMP_OPS\Comp Statements\TM msg.oft"
 asd_official_email = r"C:\Users\asorensen\OneDrive - CVRx Inc\2026_COMP_OPS\Comp Statements\ASD msg.oft"
-atm_official_email = r"C:\Users\asorensen\OneDrive - CVRx Inc\2026_COMP_OPS\Comp Statements\ATM msg.oft"
 
 # exported pdf directories
 tm_directory = fr"C:\Users\asorensen\OneDrive - CVRx Inc\2026_COMP_OPS\Comp Statements\2026_{comp_mm}\TM"
@@ -16,13 +15,14 @@ asd_prelim_directory = asd_directory + r"\PRELIMINARIES"
 cs_directory = fr"C:\Users\asorensen\OneDrive - CVRx Inc\2026_COMP_OPS\Comp Statements\2026_{comp_mm}\CS"
 cs_prelim_directory = cs_directory + r"\PRELIMINARIES"
 atm_directory = fr"C:\Users\asorensen\OneDrive - CVRx Inc\2026_COMP_OPS\Comp Statements\2026_{comp_mm}\ATM"
+atm_prelim_directory = atm_directory + r"\PRELIMINARIES"
 
 # excel files for generating statements
 vba_excel_file = r"C:\Users\asorensen\PycharmProjects\comp_statements\Excel Files\export_statements.xlsm"
 tm_comp_file = r"C:\Users\asorensen\PycharmProjects\comp_statements\Excel Files\COMP_STATEMENT.xlsx"
 cs_comp_file = r"C:\Users\asorensen\PycharmProjects\comp_statements\Excel Files\COMP_STATEMENT_CS.xlsx"
 asd_comp_file = r"C:\Users\asorensen\PycharmProjects\comp_statements\Excel Files\COMP_STATEMENT_ASD.xlsx"
-atm_comp_file = r"C:\Users\asorensen\PycharmProjects\comp_statements\Excel Files\COMP_STATEMENT_ATM.xlsm"
+atm_comp_file = r"C:\Users\asorensen\PycharmProjects\comp_statements\Excel Files\COMP_STATEMENT_ATM_2026.xlsx"
 
 # SQL files
 payout_table = r"C:\Users\asorensen\PycharmProjects\comp_statements\SQL Queries\tblPayout.sql"
@@ -31,3 +31,4 @@ cs_info = r"C:\Users\asorensen\PycharmProjects\comp_statements\SQL Queries\CS_IN
 atm_info = r"C:\Users\asorensen\PycharmProjects\comp_statements\SQL Queries\ATM_INFO.sql"
 tm_comp = r"C:\Users\asorensen\PycharmProjects\comp_statements\SQL Queries\comp_TM.sql"
 cs_comp = r"C:\Users\asorensen\PycharmProjects\comp_statements\SQL Queries\comp_CS.sql"
+atm_comp = r"C:\Users\asorensen\PycharmProjects\comp_statements\SQL Queries\comp_ATM.sql"

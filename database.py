@@ -1,7 +1,7 @@
 import pandas as pd
 import sqlalchemy.exc
 from sqlalchemy.engine import URL, create_engine
-from VARIABLES import comp_mm, payout_table, tm_comp, cs_info, tm_info, cs_comp, atm_info
+from VARIABLES import comp_mm, payout_table, tm_comp, cs_info, tm_info, cs_comp, atm_info, atm_comp
 from azure.identity import DefaultAzureCredential
 import struct
 from pprint import pprint
@@ -35,6 +35,7 @@ def get_queries(conn):
         "ATM": atm_info,
         "comp_TM": tm_comp,
         "comp_CS": cs_comp,
+        "comp_ATM": atm_comp
     }
 
     sql_files = {}
@@ -44,6 +45,7 @@ def get_queries(conn):
 
     sql_files["comp_TM"] = sql_files["comp_TM"].replace("REPLACEME", f"'2026_{comp_mm}'")
     sql_files["comp_CS"] = sql_files["comp_CS"].replace("REPLACEME", f"'2026_{comp_mm}'")
+    sql_files["comp_ATM"] = sql_files["comp_ATM"].replace("REPLACEME", f"'2026_{comp_mm}'")
     sql_files["tblPayout"] = sql_files["tblPayout"].replace("REPLACEME", f"'2026_{comp_mm}'")
 
     queries = {
@@ -54,6 +56,7 @@ def get_queries(conn):
         "tblPayout": sql_files["tblPayout"],
         "comp_TM": sql_files["comp_TM"],
         "comp_CS": sql_files["comp_CS"],
+        "comp_ATM": sql_files["comp_ATM"],
         "comp_ASD": f"select * from qry_COMP_ASD_DETAIL where CLOSE_YYYYMM = '2026_{comp_mm}' AND SALES_COMMISSIONABLE <> 0"
     }
 
@@ -139,5 +142,6 @@ class Payees:
             self.tm_comp_detail = results["comp_TM"]
             self.cs_comp_detail = results["comp_CS"]
             self.asd_comp_detail = results["comp_ASD"]
+            self.atm_comp_detail = results["comp_ATM"]
         finally:
             conn.close()

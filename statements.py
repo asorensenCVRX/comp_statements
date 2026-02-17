@@ -1,7 +1,7 @@
 from export_pdf import export_to_pdf, export_atm_pdf
 import pandas as pd
 from openpyxl import load_workbook
-from VARIABLES import comp_month, tm_comp_file, cs_comp_file, asd_comp_file
+from VARIABLES import comp_month, tm_comp_file, cs_comp_file, asd_comp_file, atm_comp_file
 
 
 def export_to_excel(excel_file: str, tab: str, dataframe: pd.DataFrame):
@@ -139,8 +139,44 @@ def cs_statements(payees, email: list[str] | None = None, export: bool = False):
             continue
 
 
-def atm_statements(prelim):
-    if prelim:
-        pass
-    else:
-        export_atm_pdf()
+def atm_statements(payees, email: list[str] | None = None, export: bool = False):
+    """Exports all comp details to COMP_STATEMENT_ATM_2026.xlsx, which can then be used to generate an official statement.
+    Optionally, you can pass in an email kwarg as a string to view info for a single rep, or as a list to view info
+    for multiple reps. Set export=True to run a VBA script to generate a PDF statement."""
+    print("Generating ATM Statements...")
+    for atm in payees.atm_info:
+        if email is None or payees.atm_info[atm]['EMAIL'] in email:
+            # get the info for only the current loop rep
+            name = atm
+            eid = payees.atm_info[atm]['EMAIL']
+            asd = payees.atm_info[atm]['RM_EMAIL']
+            terr = payees.atm_info[atm]['TERR_NM']
+            payout_df = payees.tblpayout[(payees.tblpayout['EID'] == eid) & (payees.tblpayout['ROLE'] == 'ATM')]
+            comp_detail_df = payees.atm_comp_detail[payees.atm_comp_detail['ATM_EMAIL'] == eid]
+
+            excel_file = atm_comp_file
+
+            # export the rep's tblPayout info and comp detail info to different tabs on COMP_STATEMENT.xlsx
+            export_to_excel(excel_file, 'payout', payout_df)
+            export_to_excel(excel_file, 'detail', comp_detail_df)
+
+            # export the rep's name, email, asd email, and territory name to the 'info' tab
+
+            wb = load_workbook(excel_file)
+            sheet_name = 'info'
+            sheet = wb[sheet_name]
+            sheet['B1'].value = name
+            sheet['B2'].value = eid
+            sheet['B3'].value = asd
+            sheet['B4'].value = terr
+            sheet['B5'].value = 'Associate Territory Manager'
+            sheet['B6'].value = comp_month
+            wb.save(excel_file)
+            wb.close()
+            # break
+
+            # run the specified VBA script to export as a PDF
+            if export:
+                export_to_pdf("ATMExportPDF")
+        else:
+            continue

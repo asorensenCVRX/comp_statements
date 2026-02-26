@@ -3,21 +3,22 @@ import html
 import os
 from VARIABLES import (rep_prelim_email, asd_prelim_email, rep_official_email, asd_official_email, tm_prelim_directory,
                        tm_directory, cs_prelim_directory, cs_directory, asd_prelim_directory, asd_directory, atm_directory,
-                       atm_prelim_directory)
+                       atm_prelim_directory, comp_mm, comp_month)
+from database import payees
 
 
-def send_tm_email(payees, month_mm: str, month_name: str, is_prelim: bool):
+def send_tm_email(is_prelim: bool):
     print("Sending TM prelim emails...") if is_prelim \
         else print("Sending TM official emails...")
     for key, value in payees.tm_info.items():
         try:
             folder = tm_prelim_directory if is_prelim \
                 else tm_directory
-            file_name = f'PRELIMINARY_{key}_2026_{month_mm}.pdf' if is_prelim \
-                else f'{key}_2026_{month_mm}.pdf'
+            file_name = f'PRELIMINARY_{key}_2026_{comp_mm}.pdf' if is_prelim \
+                else f'{key}_2026_{comp_mm}.pdf'
             path = os.path.join(folder, file_name)
-            subject = f"PRELIMINARY {month_name} 2026 Comp Statement: {value['TERR_NM']}" if is_prelim \
-                else f"{month_name} 2026 Comp Statement: {value['TERR_NM']}"
+            subject = f"PRELIMINARY {comp_month} 2026 Comp Statement: {value['TERR_NM']}" if is_prelim \
+                else f"{comp_month} 2026 Comp Statement: {value['TERR_NM']}"
 
             manager_email = value['RM_EMAIL']
             template = rep_prelim_email if is_prelim \
@@ -31,18 +32,18 @@ def send_tm_email(payees, month_mm: str, month_name: str, is_prelim: bool):
             continue
 
 
-def send_asd_email(payees, month_mm: str, month_name: str, is_prelim: bool):
+def send_asd_email(is_prelim: bool):
     print("Sending ASD prelim emails...") if is_prelim \
         else print("Sending ASD official emails...")
     for key, value in payees.asd_info.items():
         try:
             folder = asd_prelim_directory if is_prelim \
                 else asd_directory
-            file_name = f'PRELIMINARY_{value["FNAME"]} {value["LNAME"]}_2026_{month_mm}.pdf' if is_prelim \
-                else f"{value["FNAME"]} {value["LNAME"]}_2026_{month_mm}.pdf"
+            file_name = f'PRELIMINARY_{value["FNAME"]} {value["LNAME"]}_2026_{comp_mm}.pdf' if is_prelim \
+                else f"{value["FNAME"]} {value["LNAME"]}_2026_{comp_mm}.pdf"
             path = os.path.join(folder, file_name)
-            subject = f"PRELIMINARY {month_name} 2026 Comp Statement: {value['REGION']}" if is_prelim \
-                else f"{month_name} 2026 Comp Statement: {value['REGION']}"
+            subject = f"PRELIMINARY {comp_month} 2026 Comp Statement: {value['REGION']}" if is_prelim \
+                else f"{comp_month} 2026 Comp Statement: {value['REGION']}"
             template = asd_prelim_email if is_prelim \
                 else asd_official_email
             email = SendEmail(template=template, recipient_fullname=key, recipient_first_name=value['FNAME'],
@@ -54,18 +55,18 @@ def send_asd_email(payees, month_mm: str, month_name: str, is_prelim: bool):
             continue
 
 
-def send_cs_email(payees, month_mm: str, month_name: str, is_prelim: bool):
+def send_cs_email(is_prelim: bool):
     print("Sending CS prelim emails...") if is_prelim \
         else print("Sending CS official emails...")
     for key, value in payees.cs_info.items():
         try:
             folder = cs_prelim_directory if is_prelim \
                 else cs_directory
-            file_name = f'PRELIMINARY_{key}_2026_{month_mm}.pdf' if is_prelim \
-                else f'{key}_2026_{month_mm}.pdf'
+            file_name = f'PRELIMINARY_{key}_2026_{comp_mm}.pdf' if is_prelim \
+                else f'{key}_2026_{comp_mm}.pdf'
             path = os.path.join(folder, file_name)
-            subject = f"PRELIMINARY {month_name} 2026 Comp Statement: {value['TERR_NM']}" if is_prelim \
-                else f"{month_name} 2026 Comp Statement: {value['TERR_NM']}"
+            subject = f"PRELIMINARY {comp_month} 2026 Comp Statement: {value['TERR_NM']}" if is_prelim \
+                else f"{comp_month} 2026 Comp Statement: {value['TERR_NM']}"
             template = rep_prelim_email if is_prelim \
                 else rep_official_email
             email = SendEmail(template=template, recipient_fullname=key, recipient_first_name=value['FNAME_REP'],
@@ -77,18 +78,18 @@ def send_cs_email(payees, month_mm: str, month_name: str, is_prelim: bool):
             continue
 
 
-def send_atm_email(payees, month_mm: str, month_name: str, is_prelim: bool):
+def send_atm_email(is_prelim: bool):
     print("Sending ATM prelim emails...") if is_prelim \
         else print("Sending ATM official emails...")
     for key, value in payees.atm_info.items():
         try:
             folder = atm_prelim_directory if is_prelim \
                 else atm_directory
-            file_name = f'PRELIMINARY_{key}_2026_{month_mm}.pdf' if is_prelim \
-                else f'{key}_2026_{month_mm}.pdf'
+            file_name = f'PRELIMINARY_{key}_2026_{comp_mm}.pdf' if is_prelim \
+                else f'{key}_2026_{comp_mm}.pdf'
             path = os.path.join(folder, file_name)
-            subject = f"PRELIMINARY {month_name} 2026 Comp Statement: {value['TERR_NM']}" if is_prelim \
-                else f"{month_name} 2026 Comp Statement: {value['TERR_NM']}"
+            subject = f"PRELIMINARY {comp_month} 2026 Comp Statement: {value['TERR_NM']}" if is_prelim \
+                else f"{comp_month} 2026 Comp Statement: {value['TERR_NM']}"
 
             manager_email = value['RM_EMAIL']
             template = rep_prelim_email if is_prelim \

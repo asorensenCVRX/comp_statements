@@ -83,7 +83,8 @@ def get_rep_names(df):
             'RM_EMAIL': row['RM_EMAIL'],
             'TERR_NM': row['TERR_NM'],
             'THRESHOLD': row['THRESHOLD'],
-            'PLAN': row['PLAN']
+            'PLAN': row['PLAN'],
+            'RECOVERABLE_DRAW': row['RECOVERABLE_DRAW']
         }
     return info
 
@@ -145,3 +146,5 @@ class Payees:
             self.atm_comp_detail = results["comp_ATM"]
         finally:
             conn.close()
+
+payees = Payees()

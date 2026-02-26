@@ -2,7 +2,7 @@ from database import Payees
 from pprint import pprint
 from add_watermark import add_directory_watermark
 from send_email import send_tm_email, send_asd_email, send_cs_email, send_atm_email
-from statements import tm_statement, asd_statements, cs_statements, atm_statements
+from statements import statement
 from VARIABLES import (tm_directory, tm_prelim_directory, atm_directory, atm_prelim_directory, asd_directory,
                        asd_prelim_directory, cs_directory, cs_prelim_directory, comp_mm, comp_month)
 from tkinter import *
@@ -12,42 +12,44 @@ window.title("COMP")
 window.config(pady=20, padx=20)
 
 
-# To create only a single statement instead of looping through everyone:
-# add email='employee_email' kwarg to the statement expression (after export=...)
-# You can also pass in the email kwarg as a list to generate multiple statements
+# To create only specific tatements instead of looping through everyone:
+# add email=['employee_email', 'employee_email'...] in the form of a list to the statement expression (after export=...)
 def start():
-    payees = Payees()
     export_tf = get_radio(radio_state_export)
     prelim_tf = get_radio(radio_state_prelim)
     email_tf = get_radio(radio_state_email)
 
     if checked_state_tm.get():
-        tm_statement(payees, export=export_tf)
+        statement(role='TM', export=export_tf)
         if prelim_tf:
             add_directory_watermark(tm_directory, tm_prelim_directory)
+
     if checked_state_atm.get():
-        atm_statements(payees, export=export_tf)
+        statement(role='ATM', export=export_tf)
         if prelim_tf:
             add_directory_watermark(atm_directory, atm_prelim_directory)
+
     if checked_state_cs.get():
-        cs_statements(payees, export=export_tf)
+        statement(role='CS', export=export_tf)
         if prelim_tf:
             add_directory_watermark(cs_directory, cs_prelim_directory)
+
     if checked_state_asd.get():
-        asd_statements(payees, export=export_tf)
+        statement(role='ASD', export=export_tf)
         if prelim_tf:
             add_directory_watermark(asd_directory, asd_prelim_directory)
 
     if email_tf:
         if prelim_tf:
-            send_tm_email(payees, comp_mm, comp_month, is_prelim=True)
-            send_asd_email(payees, comp_mm, comp_month, is_prelim=True)
-            send_cs_email(payees, comp_mm, comp_month, is_prelim=True)
+            send_tm_email(is_prelim=True)
+            send_asd_email(is_prelim=True)
+            send_cs_email(is_prelim=True)
+            send_atm_email(is_prelim=True)
         else:
-            send_tm_email(payees, comp_mm, comp_month, is_prelim=False)
-            send_asd_email(payees, comp_mm, comp_month, is_prelim=False)
-            send_cs_email(payees, comp_mm, comp_month, is_prelim=False)
-            send_atm_email(payees, comp_mm, comp_month, is_prelim=False)
+            send_tm_email(is_prelim=False)
+            send_asd_email(is_prelim=False)
+            send_cs_email(is_prelim=False)
+            send_atm_email(is_prelim=False)
     window.destroy()
 
 

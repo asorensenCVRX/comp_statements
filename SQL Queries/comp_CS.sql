@@ -9,9 +9,6 @@ WHERE
             SALES_COMMISSIONABLE <> 0
             AND STAGENAME = 'Revenue Recognized'
         )
-        OR (
-            TGT_PO_YYYYMM = FORMAT(DATEADD(MONTH, -1, GETDATE()), 'yyyy_MM')
-        )
     )
 ORDER BY
     CLOSEDATE

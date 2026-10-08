@@ -1,7 +1,7 @@
 import pandas as pd
 import sqlalchemy.exc
 from sqlalchemy.engine import URL, create_engine
-from VARIABLES import comp_mm, payout_table, tm_comp, cs_info, tm_info, cs_comp, atm_info, atm_comp
+from VARIABLES import comp_mm, payout_table, tm_comp, cs_info, tm_info, cs_comp, atm_info, atm_comp, asd_info
 from azure.identity import DefaultAzureCredential
 import struct
 from pprint import pprint
@@ -33,6 +33,7 @@ def get_queries(conn):
         "TM": tm_info,
         "CS": cs_info,
         "ATM": atm_info,
+        "ASD": asd_info,
         "comp_TM": tm_comp,
         "comp_CS": cs_comp,
         "comp_ATM": atm_comp
@@ -52,7 +53,7 @@ def get_queries(conn):
         "REP": sql_files["TM"],
         "CS": sql_files["CS"],
         "ATM": sql_files["ATM"],
-        "ASD": "select * from qryRoster_RM",
+        "ASD": sql_files["ASD"],
         "tblPayout": sql_files["tblPayout"],
         "comp_TM": sql_files["comp_TM"],
         "comp_CS": sql_files["comp_CS"],
@@ -61,6 +62,7 @@ def get_queries(conn):
     }
 
     results = {}
+    # return a pandas dataframe for each sql query
     for key, query in queries.items():
         print(f"Fetching {key} info...")
         try:
